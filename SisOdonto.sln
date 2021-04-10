@@ -9,15 +9,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infrastructure", "4 - I
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Presentation", "1 - Presentation", "{2DC0B75E-CFC0-4714-8BF5-1EFF5E678929}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisOdonto.App", "SisOdonto.App\SisOdonto.App.csproj", "{F3F810BE-C6A5-4477-A72F-7C51A2E72E19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SisOdonto.App", "SisOdonto.App\SisOdonto.App.csproj", "{F3F810BE-C6A5-4477-A72F-7C51A2E72E19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisOdonto.Domain", "SisOdonto.Domain\SisOdonto.Domain.csproj", "{60409737-210D-41C0-AFFC-856CFBD5E010}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SisOdonto.Domain", "SisOdonto.Domain\SisOdonto.Domain.csproj", "{60409737-210D-41C0-AFFC-856CFBD5E010}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisOdonto.Infrastructure", "SisOdonto.Infrastructure\SisOdonto.Infrastructure.csproj", "{456FC678-6892-4A9C-9B3F-30BF25F1B9C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SisOdonto.Infrastructure", "SisOdonto.Infrastructure\SisOdonto.Infrastructure.csproj", "{456FC678-6892-4A9C-9B3F-30BF25F1B9C5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Application", "2 - Application", "{C90AED0D-1F3D-49AF-81CF-D773D625047C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisOdonto.Application", "SisOdonto.Application\SisOdonto.Application.csproj", "{4C795C28-B8D9-484D-9B91-499BAC8EAF73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SisOdonto.Application", "SisOdonto.Application\SisOdonto.Application.csproj", "{4C795C28-B8D9-484D-9B91-499BAC8EAF73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisOdonto.Identity", "SisOdonto.Identity\SisOdonto.Identity.csproj", "{80B27AEC-0631-4BD0-847C-012A0DE954AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{4C795C28-B8D9-484D-9B91-499BAC8EAF73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C795C28-B8D9-484D-9B91-499BAC8EAF73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C795C28-B8D9-484D-9B91-499BAC8EAF73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80B27AEC-0631-4BD0-847C-012A0DE954AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80B27AEC-0631-4BD0-847C-012A0DE954AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80B27AEC-0631-4BD0-847C-012A0DE954AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80B27AEC-0631-4BD0-847C-012A0DE954AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +56,7 @@ Global
 		{60409737-210D-41C0-AFFC-856CFBD5E010} = {4FEAA027-80C3-43B7-A094-92860D04E0DA}
 		{456FC678-6892-4A9C-9B3F-30BF25F1B9C5} = {463AD008-3FB6-4CCF-BC3E-CD9E6475442F}
 		{4C795C28-B8D9-484D-9B91-499BAC8EAF73} = {C90AED0D-1F3D-49AF-81CF-D773D625047C}
+		{80B27AEC-0631-4BD0-847C-012A0DE954AC} = {2DC0B75E-CFC0-4714-8BF5-1EFF5E678929}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1852136A-C53E-4F95-9B80-C1F3EC3205EF}
