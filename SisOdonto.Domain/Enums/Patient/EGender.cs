@@ -1,8 +1,13 @@
-﻿namespace SisOdonto.Domain.Enums.Patient
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SisOdonto.Domain.Enums.Patient
 {
     public enum EGender
     {
-        Masculino = 1,
-        Feminino = 2
+        [Display(Name = "Masculino")]
+        Male = 1,
+
+        [Display(Name = "Feminino")]
+        Female = 2
     }
 }

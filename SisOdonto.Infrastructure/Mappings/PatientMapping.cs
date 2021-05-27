@@ -23,22 +23,22 @@ namespace SisOdonto.Infrastructure.Mappings
                 .IsRequired();
 
             builder
-                .Property(si => si.Gender)
+                .Property(p => p.Gender)
                 .IsRequired();
 
             builder
-                .Property(si => si.MaritalStatus)
+                .Property(p => p.MaritalStatus)
                 .IsRequired();
 
             builder
-                .Property(si => si.Occupation)
+                .Property(p => p.Occupation)
                 .IsRequired();
 
             builder
-                .Property(si => si.Telephone);
+                .Property(p => p.Telephone);
 
             builder
-                .Property(si => si.Cellular)
+                .Property(p => p.Cellular)
                 .IsRequired();
 
             builder
@@ -48,10 +48,10 @@ namespace SisOdonto.Infrastructure.Mappings
                 .IsRequired();
 
             builder
-                .Ignore(si => si.CascadeMode);
+                .Ignore(p => p.CascadeMode);
 
             builder
-                .Ignore(si => si.ValidationResult);
+                .Ignore(p => p.ValidationResult);
         }
 
         #endregion Methods

@@ -1,15 +1,19 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SisOdonto.Application.Interfaces;
+using SisOdonto.Application.Models.Dentist;
 using SisOdonto.Domain.Entities;
 using SisOdonto.Domain.Interfaces.Notification;
 using SisOdonto.Domain.Interfaces.Repositories;
 using SisOdonto.Domain.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Security.Claims;
+using System.Security.Policy;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using SisOdonto.Application.Interfaces;
-using SisOdonto.Application.Models.Dentist;
+using Microsoft.AspNetCore.WebUtilities;
+using SisOdonto.Domain.Interfaces.Services;
 
 namespace SisOdonto.Application.Services
 {
@@ -19,6 +23,7 @@ namespace SisOdonto.Application.Services
 
         private readonly IDentistRepository _dentistRepository;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IEmailService _emailService;
 
         #endregion Fields
 
@@ -27,48 +32,45 @@ namespace SisOdonto.Application.Services
         public DentistService(IUnitOfWork unitOfWork,
             INotifier notifier,
             UserManager<IdentityUser> userManager,
-            IDentistRepository dentistRepository)
+            IDentistRepository dentistRepository,
+            IEmailService emailService)
             : base(unitOfWork, notifier, userManager)
         {
             _userManager = userManager;
             _dentistRepository = dentistRepository;
+            _emailService = emailService;
         }
 
-        public async Task Create(DentistDataModel request)
+        public async Task<DentistDataModel> Get(Guid id)
         {
-            var hasDentist = await _dentistRepository.GetAsync(request.Cpf);
+            DentistDataModel dentistModel = null;
 
-            if (hasDentist is not null)
-            {
-                Notify("Já existe um dentista cadastrado com este cpf informado.");
-                return;
-            }
+            var dentist = await _dentistRepository.GetAsync(id);
 
-            var user = new IdentityUser { UserName = request.Name, Email = request.Email };
-
-            var result = await _userManager.CreateAsync(user, GeneratePassword());
-
-            if (result.Succeeded)
-            {
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                await _userManager.ConfirmEmailAsync(user, code);
-
-                //AddClaimAsync(new Claim("Schedul", ""))
-            }
-
-            var dentist = new Dentist(Guid.Parse(user.Id), request.BirthDate, request.Cep, request.City, request.Complement, request.Cpf, request.District, request.Email, request.Name, request.Number, request.State, request.Street, request.Cro, request.Expertise);
-
-            if (dentist.IsValid())
-                await _dentistRepository.AddAsync(dentist);
+            if (dentist is null)
+                Notify("Dados do Dentista não encontrado.");
             else
             {
-                await _userManager.DeleteAsync(user);
-                Notify(dentist.ValidationResult);
-                return;
+                dentistModel = new DentistDataModel()
+                {
+                    Id = dentist.Id,
+                    BirthDate = dentist.BirthDate,
+                    Cep = dentist.Cep,
+                    City = dentist.City,
+                    Complement = dentist.Complement,
+                    Cpf = dentist.Cpf,
+                    Cro = dentist.Cro,
+                    Street = dentist.Street,
+                    Number = dentist.Number,
+                    State = dentist.State,
+                    District = dentist.District,
+                    Email = dentist.Email,
+                    Expertise = dentist.Expertise,
+                    Name = dentist.Name
+                };
             }
 
-            await CommitAsync();
+            return dentistModel;
         }
 
         public async Task<IEnumerable<DentistDataModel>> GetAll()
@@ -81,20 +83,140 @@ namespace SisOdonto.Application.Services
             {
                 dentistsModel.Add(new DentistDataModel()
                 {
+                    Id = dentist.Id,
                     BirthDate = dentist.BirthDate,
                     Cep = dentist.Cep,
                     City = dentist.City,
                     Complement = dentist.Complement,
                     Cpf = dentist.Cpf,
                     Cro = dentist.Cro,
+                    Street = dentist.Street,
+                    Number = dentist.Number,
+                    State = dentist.State,
                     District = dentist.District,
-                    Email = dentist.Email, 
+                    Email = dentist.Email,
                     Expertise = dentist.Expertise,
                     Name = dentist.Name
                 });
             }
 
             return dentistsModel;
+        }
+
+        public async Task Create(DentistDataModel request)
+        {
+            var hasDentist = await _dentistRepository.GetAsync(request.Cpf);
+
+            if (hasDentist is not null)
+            {
+                Notify("Já existe um dentista cadastrado com este cpf informado.");
+                return;
+            }
+
+            var userId = Guid.NewGuid();
+
+            if (request.CreateUser)
+            {
+                var user = new IdentityUser { UserName = request.Email, Email = request.Email };
+
+                userId = Guid.Parse(user.Id);
+
+                var password = GeneratePassword();
+
+                var result = await _userManager.CreateAsync(user, password);
+
+                if (result.Succeeded)
+                {
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                    await _userManager.ConfirmEmailAsync(user, code);
+
+                    await AddClaimAsync(new Claim("kind", "dentist"), Guid.Parse(user.Id));
+
+                    _emailService.SendEmail(user.Email, "Credenciais de Acesso - SisOdonto", "Credenciais", $"Usuário: {user.Email} <br> Senha: {password}");
+                }
+                else
+                {
+                    Notify("Erro ao criar usuário.");
+                    return;
+                }
+            }
+            
+            var dentist = new Dentist(userId, request.BirthDate, request.Cep, request.City, request.Complement, request.Cpf, request.District, request.Email, request.Name, request.Number, request.State, request.Street, request.Cro, request.Expertise);
+
+            if (dentist.IsValid())
+                await _dentistRepository.AddAsync(dentist);
+            else
+            {
+                var userManager = await _userManager.FindByIdAsync(userId.ToString());
+
+                if (userManager is not null)
+                    await _userManager.DeleteAsync(userManager);
+
+                Notify(dentist.ValidationResult);
+                return;
+            }
+
+            if (await CommitAsync() is false)
+            {
+                var userManager = await _userManager.FindByIdAsync(userId.ToString());
+
+                if (userManager is not null)
+                    await _userManager.DeleteAsync(userManager);
+            }
+        }
+
+        public async Task Update(DentistDataModel request)
+        {
+            var dentist = await _dentistRepository.GetAsync(request.Id);
+
+            if (dentist is null)
+            {
+                Notify("Dados do Dentista não encontrado.");
+                return;
+            }
+
+            dentist.Update(request.BirthDate, request.Cep, request.City, request.Complement, request.Cpf, request.District, request.Email, request.Name, request.Number, request.State, request.Street, request.Cro, request.Expertise);
+
+            if (dentist.IsValid())
+                _dentistRepository.Update(dentist);
+            else
+            {
+                Notify(dentist.ValidationResult);
+                return;
+            }
+
+            await CommitAsync();
+        }
+
+        public async Task Delete(Guid id)
+        {
+            var dentist = await _dentistRepository.GetAsync(id);
+
+            if (dentist is null)
+            {
+                Notify("Dados do Dentista não encontrado.");
+                return;
+            }
+
+            dentist.Delete();
+
+            if (dentist.IsValid())
+                _dentistRepository.Update(dentist);
+            else
+            {
+                Notify(dentist.ValidationResult);
+                return;
+            }
+
+            if (await CommitAsync())
+            {
+                var userManager = await _userManager.FindByIdAsync(id.ToString());
+
+                if (userManager is not null)
+                    await _userManager.DeleteAsync(userManager);
+
+            }
         }
 
         private string GeneratePassword()

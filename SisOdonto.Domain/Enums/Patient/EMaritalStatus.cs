@@ -1,11 +1,22 @@
-﻿namespace SisOdonto.Domain.Enums.Patient
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SisOdonto.Domain.Enums.Patient
 {
     public enum EMaritalStatus
     {
-        Solteiro = 1,
-        Casado = 2,
-        Divorciado = 3,
-        Viúvo = 4,
-        UniãoEstável = 5
+        [Display(Name = "Solteiro")]
+        Single = 1,
+
+        [Display(Name = "Casado")]
+        Married = 2,
+
+        [Display(Name = "Divorciado")]
+        Divorced = 3,
+
+        [Display(Name = "Viúvo")]
+        Widower = 4,
+
+        [Display(Name = "União Estável")]
+        UnionStable = 5
     }
 }

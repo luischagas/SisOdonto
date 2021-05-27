@@ -23,12 +23,12 @@ namespace SisOdonto.Infrastructure.Mappings
                 .IsRequired();
 
             builder
-                .Property(si => si.Datetime)
+                .Property(s => s.Datetime)
                 .HasColumnType("datetimeoffset")
                 .IsRequired();
 
             builder
-                .Property(si => si.Obs);
+                .Property(s => s.Obs);
 
             builder
                 .HasOne(s => s.Patient)
@@ -38,15 +38,15 @@ namespace SisOdonto.Infrastructure.Mappings
 
             builder
                 .HasOne(s => s.Dentist)
-                .WithMany(a => a.Schedules)
+                .WithMany(d => d.Schedules)
                 .HasForeignKey(s => s.DentistId)
                 .IsRequired();
 
             builder
-                .Ignore(si => si.CascadeMode);
+                .Ignore(s => s.CascadeMode);
 
             builder
-                .Ignore(si => si.ValidationResult);
+                .Ignore(s => s.ValidationResult);
         }
 
         #endregion Methods

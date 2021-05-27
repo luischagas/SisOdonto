@@ -9,14 +9,14 @@ namespace SisOdonto.Domain.Interfaces.Repositories
     {
         #region Methods
 
-        Task AddAsync(Dentist dentists);
+        Task AddAsync(Dentist dentist);
 
         Task<IEnumerable<Dentist>> GetAllAsync();
 
         Task<Dentist> GetAsync(Guid id);
 
         Task<Dentist> GetAsync(string cpf);
-        void Update(Dentist dentists);
+        void Update(Dentist dentist);
 
         #endregion Methods
     }

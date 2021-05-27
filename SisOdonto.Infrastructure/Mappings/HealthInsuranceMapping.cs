@@ -19,27 +19,27 @@ namespace SisOdonto.Infrastructure.Mappings
                 .ToTable("HealthInsurances");
 
             builder
-                .Property(s => s.CreatedOn)
+                .Property(hi => hi.CreatedOn)
                 .HasColumnType("datetimeoffset")
                 .IsRequired();
 
             builder
-                .Property(s => s.IsDeleted)
+                .Property(hi => hi.IsDeleted)
                 .IsRequired();
 
             builder
-                .Property(si => si.Name)
+                .Property(hi => hi.Name)
                 .IsRequired();
 
             builder
-                .Property(si => si.Type)
+                .Property(hi => hi.Type)
                 .IsRequired();
 
             builder
-                .Ignore(si => si.CascadeMode);
+                .Ignore(hi => hi.CascadeMode);
 
             builder
-                .Ignore(si => si.ValidationResult);
+                .Ignore(hi => hi.ValidationResult);
         }
 
         #endregion Methods

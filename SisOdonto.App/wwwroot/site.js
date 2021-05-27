@@ -3,19 +3,17 @@
     $(document).ready(function () {
         $(function () {
             $.ajaxSetup({ cache: false });
-
-            $("a[data-modal]").on("click",
-                function (e) {
-                    $('#myModalContent').load(this.href,
-                        function () {
-                            $('#myModal').modal({
+            $(document).on('click', 'a[data-modal]', function (e) {
+                $('#myModalContent').load(this.href,
+                    function () {
+                        $('#myModal').modal({
                                 keyboard: true
                             },
-                                'show');
-                            bindForm(this);
-                        });
-                    return false;
-                });
+                            'show');
+                        bindForm(this);
+                    });
+                return false;
+            });
         });
     });
 }
@@ -29,10 +27,12 @@ function bindForm(dialog) {
             success: function (result) {
                 if (result.success) {
                     $('#myModal').modal('hide');
-                    toastr.success('Cadastro realizado com sucesso!')
+                    toastr.success('Cadastro realizado com sucesso!');
+                    $.get(result.url);
+                    location.reload();
                 } else {
                     $('#myModalContent').html(result);
-                    toastr.error('Dados Inválidos!')
+                    toastr.error('Dados Inválidos!');
                     bindForm(dialog);
                 }
             }
@@ -108,5 +108,7 @@ function BuscaCep() {
 }
 
 $(document).ready(function () {
+
+   
     $("#msg_box").fadeOut(2500);
 });

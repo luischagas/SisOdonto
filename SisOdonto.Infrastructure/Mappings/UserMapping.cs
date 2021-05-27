@@ -11,66 +11,69 @@ namespace SisOdonto.Infrastructure.Mappings
             builder.ToTable("Users");
 
             builder
-                .HasKey(si => si.Id);
+                .HasKey(u => u.Id);
 
             builder
-                .Property(si => si.CreatedOn)
+                .Property(u => u.CreatedOn)
                 .HasColumnType("datetimeoffset")
                 .IsRequired();
 
             builder
-                .Property(si => si.IsDeleted)
+                .Property(u => u.IsDeleted)
                 .IsRequired();
 
             builder
-                .Property(si => si.Name)
+                .Property(u => u.Name)
                 .IsRequired();
 
             builder
-                .Property(si => si.BirthDate)
+                .Property(u => u.BirthDate)
                 .HasColumnType("datetimeoffset")
                 .IsRequired();
 
             builder
-                .Property(si => si.Cep)
+                .Property(u => u.Cep)
                 .IsRequired();
 
             builder
-                .Property(si => si.Street)
+                .Property(u => u.Street)
                 .IsRequired();
 
             builder
-                .Property(si => si.Number)
+                .Property(u => u.Number)
                 .IsRequired();
 
             builder
-                .Property(si => si.Complement);
+                .Property(u => u.Complement);
 
             builder
-                .Property(si => si.District)
+                .Property(u => u.District)
                 .IsRequired();
 
             builder
-                .Property(si => si.City)
+                .Property(u => u.City)
                 .IsRequired();
 
             builder
-                .Property(si => si.State)
+                .Property(u => u.State)
                 .IsRequired();
 
             builder
-                .Property(si => si.Cpf)
+                .Property(u => u.Cpf)
                 .IsRequired();
 
             builder
-                .Property(si => si.Email)
+                .Property(u => u.Email)
                 .IsRequired();
 
             builder
-                .Ignore(si => si.CascadeMode);
+                .Ignore(u => u.CascadeMode);
 
             builder
-                .Ignore(si => si.ValidationResult);
+                .Ignore(u => u.ValidationResult);
+
+            builder
+                .HasQueryFilter(u => u.IsDeleted == false);
         }
     }
 }

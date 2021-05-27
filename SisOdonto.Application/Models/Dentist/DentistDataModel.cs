@@ -9,6 +9,8 @@ namespace SisOdonto.Application.Models.Dentist
     {
         #region Properties
 
+        public Guid Id { get; set; }
+
         [Required]
         [DisplayName("Data de Nascimento")]
         public DateTimeOffset BirthDate { get; set; }
@@ -59,6 +61,10 @@ namespace SisOdonto.Application.Models.Dentist
         [DisplayName("Logradouro")]
         [Required]
         public string Street { get; set; }
+
+        [DisplayName("Criar Usuário?")]
+        [Required]
+        public bool CreateUser { get; set; }
 
         #endregion Properties
     }

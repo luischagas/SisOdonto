@@ -28,10 +28,10 @@ namespace SisOdonto.Infrastructure.Repositories
             _disposed = false;
         }
 
-        public async Task AddAsync(Dentist dentists)
+        public async Task AddAsync(Dentist dentist)
         {
             await _dentists
-                .AddAsync(dentists);
+                .AddAsync(dentist);
         }
 
         public async Task<Dentist> GetAsync(Guid id)
@@ -53,9 +53,9 @@ namespace SisOdonto.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public void Update(Dentist dentists)
+        public void Update(Dentist dentist)
         {
-            _db.Update(dentists);
+            _db.Update(dentist);
         }
 
         public void Dispose()

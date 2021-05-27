@@ -1,10 +1,19 @@
-﻿namespace SisOdonto.Domain.Enums.Dentist
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SisOdonto.Domain.Enums.Dentist
 {
     public enum EExpertise
     {
-        ClinicoGeral = 1,
-        Ortodontia = 2,
-        Implantodontia = 3,
-        Endodontia = 4
+        [Display(Name = "Clínico Geral")]
+        GeneralPractitioner = 1,
+
+        [Display(Name = "Ortodondia")]
+        Orthodontics = 2,
+
+        [Display(Name = "Implantodontia")]
+        Implantology = 3,
+
+        [Display(Name = "Endodontia")]
+        Endodontics = 4
     }
 }

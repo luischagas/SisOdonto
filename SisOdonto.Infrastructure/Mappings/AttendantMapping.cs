@@ -14,27 +14,27 @@ namespace SisOdonto.Infrastructure.Mappings
                 .ToTable("Attendants");
 
             builder
-                .Property(s => s.CreatedOn)
+                .Property(a => a.CreatedOn)
                 .HasColumnType("datetimeoffset")
                 .IsRequired();
 
             builder
-                .Property(s => s.IsDeleted)
+                .Property(a => a.IsDeleted)
                 .IsRequired();
 
             builder
-                .Property(si => si.Telephone)
+                .Property(a => a.Telephone)
                 .IsRequired();
 
             builder
-                .Property(si => si.Cellular)
+                .Property(a => a.Cellular)
                 .IsRequired();
 
             builder
-                .Ignore(si => si.CascadeMode);
+                .Ignore(a => a.CascadeMode);
 
             builder
-                .Ignore(si => si.ValidationResult);
+                .Ignore(a => a.ValidationResult);
 
            
         }
