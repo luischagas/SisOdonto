@@ -19,6 +19,9 @@ namespace SisOdonto.Infrastructure.Mappings
                 .ToTable("HealthInsurances");
 
             builder
+                .HasKey(i => i.Id).IsClustered(false);
+
+            builder
                 .Property(hi => hi.CreatedOn)
                 .HasColumnType("datetimeoffset")
                 .IsRequired();
@@ -40,6 +43,10 @@ namespace SisOdonto.Infrastructure.Mappings
 
             builder
                 .Ignore(hi => hi.ValidationResult);
+
+
+            builder
+                .HasQueryFilter(u => u.IsDeleted == false);
         }
 
         #endregion Methods

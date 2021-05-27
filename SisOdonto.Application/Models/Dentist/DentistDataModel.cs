@@ -27,7 +27,7 @@ namespace SisOdonto.Application.Models.Dentist
         public string Complement { get; set; }
 
         [DisplayName("CPF")]
-        [StringLength(11, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 1)]
+        [StringLength(14, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 1)]
         public string Cpf { get; set; }
 
         [DisplayName("CRO")]

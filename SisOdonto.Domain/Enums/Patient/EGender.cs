@@ -8,6 +8,9 @@ namespace SisOdonto.Domain.Enums.Patient
         Male = 1,
 
         [Display(Name = "Feminino")]
-        Female = 2
+        Female = 2,
+            
+        [Display(Name = "Outro")]
+        Other = 3
     }
 }

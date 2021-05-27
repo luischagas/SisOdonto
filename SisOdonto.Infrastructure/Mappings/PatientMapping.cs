@@ -43,8 +43,8 @@ namespace SisOdonto.Infrastructure.Mappings
 
             builder
                 .HasOne(i => i.HealthInsurance)
-                .WithOne()
-                .HasForeignKey<Patient>(b => b.HealthInsuranceId)
+                .WithMany(hi => hi.Patients)
+                .HasForeignKey(b => b.HealthInsuranceId)
                 .IsRequired();
 
             builder

@@ -20,14 +20,16 @@
 
 function bindForm(dialog) {
     $('form', dialog).submit(function () {
+        $("#loadingoverlay").fadeIn();
         $.ajax({
             url: this.action,
             type: this.method,
             data: $(this).serialize(),
             success: function (result) {
+                $("#loadingoverlay").fadeOut();
                 if (result.success) {
+                    toastr.success(result.messageText);
                     $('#myModal').modal('hide');
-                    toastr.success('Cadastro realizado com sucesso!');
                     $.get(result.url);
                     location.reload();
                 } else {

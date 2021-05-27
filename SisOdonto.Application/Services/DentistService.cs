@@ -4,16 +4,13 @@ using SisOdonto.Application.Models.Dentist;
 using SisOdonto.Domain.Entities;
 using SisOdonto.Domain.Interfaces.Notification;
 using SisOdonto.Domain.Interfaces.Repositories;
+using SisOdonto.Domain.Interfaces.Services;
 using SisOdonto.Domain.Shared;
+using SisOdonto.Domain.Utils;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Security.Policy;
-using System.Text;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.WebUtilities;
-using SisOdonto.Domain.Interfaces.Services;
 
 namespace SisOdonto.Application.Services
 {
@@ -121,7 +118,9 @@ namespace SisOdonto.Application.Services
 
                 userId = Guid.Parse(user.Id);
 
-                var password = GeneratePassword();
+                var options = _userManager.Options.Password;
+
+                var password = Utils.GeneratePassword(options.RequiredLength, options.RequireNonAlphanumeric, options.RequireDigit, options.RequireLowercase, options.RequireUppercase);
 
                 var result = await _userManager.CreateAsync(user, password);
 
@@ -141,8 +140,8 @@ namespace SisOdonto.Application.Services
                     return;
                 }
             }
-            
-            var dentist = new Dentist(userId, request.BirthDate, request.Cep, request.City, request.Complement, request.Cpf, request.District, request.Email, request.Name, request.Number, request.State, request.Street, request.Cro, request.Expertise);
+
+            var dentist = new Dentist(userId, request.BirthDate, request.Cep, request.City, request.Complement, request.Cpf.Replace(".", "").Replace("-", ""), request.District, request.Email, request.Name, request.Number, request.State, request.Street, request.Cro, request.Expertise);
 
             if (dentist.IsValid())
                 await _dentistRepository.AddAsync(dentist);
@@ -159,6 +158,8 @@ namespace SisOdonto.Application.Services
 
             if (await CommitAsync() is false)
             {
+                Notify("Erro ao salvar dados.");
+
                 var userManager = await _userManager.FindByIdAsync(userId.ToString());
 
                 if (userManager is not null)
@@ -176,7 +177,7 @@ namespace SisOdonto.Application.Services
                 return;
             }
 
-            dentist.Update(request.BirthDate, request.Cep, request.City, request.Complement, request.Cpf, request.District, request.Email, request.Name, request.Number, request.State, request.Street, request.Cro, request.Expertise);
+            dentist.Update(request.BirthDate, request.Cep, request.City, request.Complement, request.Cpf.Replace(".", "").Replace("-", ""), request.District, request.Email, request.Name, request.Number, request.State, request.Street, request.Cro, request.Expertise);
 
             if (dentist.IsValid())
                 _dentistRepository.Update(dentist);
@@ -186,7 +187,8 @@ namespace SisOdonto.Application.Services
                 return;
             }
 
-            await CommitAsync();
+            if (await CommitAsync() is false)
+                Notify("Erro ao salvar dados.");
         }
 
         public async Task Delete(Guid id)
@@ -215,50 +217,8 @@ namespace SisOdonto.Application.Services
 
                 if (userManager is not null)
                     await _userManager.DeleteAsync(userManager);
-
-            }
-        }
-
-        private string GeneratePassword()
-        {
-            var options = _userManager.Options.Password;
-
-            int length = options.RequiredLength;
-
-            bool nonAlphanumeric = options.RequireNonAlphanumeric;
-            bool digit = options.RequireDigit;
-            bool lowercase = options.RequireLowercase;
-            bool uppercase = options.RequireUppercase;
-
-            StringBuilder password = new StringBuilder();
-            Random random = new Random();
-
-            while (password.Length < length)
-            {
-                char c = (char)random.Next(32, 126);
-
-                password.Append(c);
-
-                if (char.IsDigit(c))
-                    digit = false;
-                else if (char.IsLower(c))
-                    lowercase = false;
-                else if (char.IsUpper(c))
-                    uppercase = false;
-                else if (!char.IsLetterOrDigit(c))
-                    nonAlphanumeric = false;
-            }
-
-            if (nonAlphanumeric)
-                password.Append((char)random.Next(33, 48));
-            if (digit)
-                password.Append((char)random.Next(48, 58));
-            if (lowercase)
-                password.Append((char)random.Next(97, 123));
-            if (uppercase)
-                password.Append((char)random.Next(65, 91));
-
-            return password.ToString();
+            } else
+                Notify("Erro ao salvar dados.");
         }
 
         #endregion Constructors

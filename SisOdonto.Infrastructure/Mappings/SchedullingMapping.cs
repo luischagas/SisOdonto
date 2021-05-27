@@ -14,6 +14,9 @@ namespace SisOdonto.Infrastructure.Mappings
                 .ToTable("Schedules");
 
             builder
+                .HasKey(i => i.Id).IsClustered(false);
+
+            builder
                 .Property(s => s.CreatedOn)
                 .HasColumnType("datetimeoffset")
                 .IsRequired();
@@ -47,6 +50,9 @@ namespace SisOdonto.Infrastructure.Mappings
 
             builder
                 .Ignore(s => s.ValidationResult);
+
+            builder
+                .HasQueryFilter(u => u.IsDeleted == false);
         }
 
         #endregion Methods

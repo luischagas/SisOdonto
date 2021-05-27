@@ -11,7 +11,7 @@ namespace SisOdonto.Infrastructure.Mappings
             builder.ToTable("Users");
 
             builder
-                .HasKey(u => u.Id);
+                .HasKey(i => i.Id).IsClustered(false);
 
             builder
                 .Property(u => u.CreatedOn)

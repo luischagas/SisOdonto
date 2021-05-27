@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="~/theme/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="~/theme/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <link rel="stylesheet" href="~/theme/plugins/toastr/toastr.min.css">
+    <link href="~/site.css" rel="stylesheet" />
     <script src="~/theme/plugins/jquery/jquery.min.js"></script>
     <script src="~/theme/plugins/inputmask/jquery.inputmask.min.js"></script>
 
@@ -57,7 +58,7 @@
                         <li class="user-footer">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <a asp-action="ChangePassword" data-modal="">
+                                    <a asp-controller="Home" asp-action="ChangePassword" data-modal="">
                                         <input type="submit" value="Editar Senha" style="margin: 0 !important;" class="btn btn-default" />
                                     </a>
                                 </div>
@@ -67,12 +68,12 @@
                                     </form>
                                 </div>
                             </div>
-                                
-
-                              
 
 
-                                @*<a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" class="btn btn-default btn-flat float-right">Sair</a>*@
+
+
+
+                            @*<a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" class="btn btn-default btn-flat float-right">Sair</a>*@
                         </li>
                     </ul>
                 </li>
@@ -80,104 +81,113 @@
         </nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="~/theme/index3.html" class="brand-link">
-        <img src="~/theme/dist/img/logo.svg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">SisOdonto</span>
-    </a>
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="/" class="brand-link">
+                <img src="~/theme/dist/img/logo.svg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">SisOdonto</span>
+            </a>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
+            <!-- Sidebar -->
+            <div class="sidebar">
 
-    <!-- Sidebar Menu -->
-    <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <li class="nav-header">CADASTROS</li>
-            <li class="nav-item">
-                <a sp-area="" asp-controller="Dentist" class="nav-link">
-                    <i class="nav-icon fas fa-tooth"></i>
-                    <p>
-                        Dentista
-                    </p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="../gallery.html" class="nav-link">
-                    <i class="nav-icon fas fa-user"></i>
-                    <p>
-                        Atendente
-                    </p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="../kanban.html" class="nav-link">
-                    <i class="nav-icon fas fa-user-plus"></i>
-                    <p>
-                        Paciente
-                    </p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="../kanban.html" class="nav-link">
-                    <i class="nav-icon fas fa-notes-medical"></i>
-                    <p>
-                        Convênio
-                    </p>
-                </a>
-            </li>
-            <li class="nav-header">AGENDAMENTOS</li>
-            <li class="nav-item">
-                <a href="../kanban.html" class="nav-link">
-                    <i class="nav-icon far fa-calendar-alt"></i>
-                    <p>
-                        Agendar Consulta
-                    </p>
-                </a>
-            </li>
-            <li class="nav-header">RELATÓRIOS</li>
-            <li class="nav-item">
-                <a href="../kanban.html" class="nav-link">
-                    <i class="nav-icon far fa-file-pdf"></i>
-                    <p>
-                        Relatório de Pacientes
-                    </p>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
-    </aside>
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-header">CADASTROS</li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Dentist" class="nav-link">
+                                <i class="nav-icon fas fa-tooth"></i>
+                                <p>
+                                    Dentista
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Attendant" class="nav-link">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>
+                                    Atendente
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Patient" class="nav-link">
+                                <i class="nav-icon fas fa-user-plus"></i>
+                                <p>
+                                    Paciente
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="HealthInsurance" class="nav-link">
+                                <i class="nav-icon fas fa-notes-medical"></i>
+                                <p>
+                                    Convênio
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-header">AGENDAMENTOS</li>
+                        <li class="nav-item">
+                            <a href="../kanban.html" class="nav-link">
+                                <i class="nav-icon far fa-calendar-alt"></i>
+                                <p>
+                                    Agendar Consulta
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-header">RELATÓRIOS</li>
+                        <li class="nav-item">
+                            <a href="../kanban.html" class="nav-link">
+                                <i class="nav-icon far fa-file-pdf"></i>
+                                <p>
+                                    Relatório de Pacientes
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
         @RenderBody()
     </div>
 
-<div id="myModal" class="modal fade in">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div id="myModalContent"></div>
+    <div id="myModal" class="modal fade in">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div id="myModalContent"></div>
+            </div>
         </div>
     </div>
-</div>
+
+
+    <div id="loadingoverlay">
+        <div class="cv-spinner">
+            <span class="spinner"></span>
+        </div>
+    </div>
+
+
 
     <!-- Bootstrap 4 -->
     <script src="~/theme/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/theme/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
-<script src="~/theme/dist/js/demo.js"></script>
+    <script src="~/theme/dist/js/demo.js"></script>
 
-<script src="~/theme/plugins/toastr/toastr.min.js"></script>
-    
-        
-<script src="~/site.js"></script>
-<script>
-    $(document).ready(function () {
-        SetModal();
-    });
-</script>
+    <script src="~/theme/plugins/toastr/toastr.min.js"></script>
 
-@RenderSection("Scripts", required: false)
+
+    <script src="~/site.js"></script>
+    <script>
+        $(document).ready(function () {
+            SetModal();
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

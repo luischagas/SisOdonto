@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SisOdonto.Infrastructure.CrossCutting.Extensions.Configurations
+namespace SisOdonto.Infrastructure.CrossCutting.Configurations
 {
     public static class MvcConfig
     {

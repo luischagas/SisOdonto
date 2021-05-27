@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SisOdonto.Infrastructure.Context;
+using SisOdonto.Infrastructure.CrossCutting.Configurations;
 using SisOdonto.Infrastructure.CrossCutting.Extensions.Configurations;
 using SisOdonto.Infrastructure.CrossCutting.Identity;
 using SisOdonto.Infrastructure.CrossCutting.IoC;

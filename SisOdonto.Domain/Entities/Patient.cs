@@ -14,7 +14,7 @@ namespace SisOdonto.Domain.Entities
 
         #region Constructors
 
-        public Patient(Guid id, DateTimeOffset birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, string street, Guid healthInsuranceId, EMaritalStatus maritalStatus, EGender gender, string occupation, string telephone, string cellular)
+        public Patient(Guid id, DateTimeOffset birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, Guid healthInsuranceId, string street, EMaritalStatus maritalStatus, EGender gender, string occupation, string telephone, string cellular)
         {
             Id = id;
             BirthDate = birthDate;
@@ -27,8 +27,8 @@ namespace SisOdonto.Domain.Entities
             Name = name;
             Number = number;
             State = state;
-            Street = street;
             HealthInsuranceId = healthInsuranceId;
+            Street = street;
             MaritalStatus = maritalStatus;
             Gender = gender;
             Occupation = occupation;
@@ -59,7 +59,7 @@ namespace SisOdonto.Domain.Entities
 
         #region Methods
 
-        public void Update(DateTimeOffset birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, string street, Guid healthInsuranceId, EMaritalStatus maritalStatus, EGender gender, string occupation, string telephone, string cellular)
+        public void Update(DateTimeOffset birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, string street, EMaritalStatus maritalStatus, EGender gender, string occupation, string telephone, string cellular)
         {
             BirthDate = birthDate;
             Cep = cep;
@@ -72,12 +72,19 @@ namespace SisOdonto.Domain.Entities
             Number = number;
             State = state;
             Street = street;
-            HealthInsuranceId = healthInsuranceId;
             MaritalStatus = maritalStatus;
             Gender = gender;
             Occupation = occupation;
             Telephone = telephone;
             Cellular = cellular;
+        }
+
+        public void SetHealthInsurance(HealthInsurance healthInsurance)
+        {
+            if (healthInsurance.IsValid())
+                HealthInsurance = healthInsurance;
+
+            AddErrors(healthInsurance.ValidationResult);
         }
 
         public void AddScheduling(Scheduling scheduling)

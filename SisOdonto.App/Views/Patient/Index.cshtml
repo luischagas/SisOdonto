@@ -1,0 +1,158 @@
+﻿@using SisOdonto.Infrastructure.CrossCutting.Extensions
+@model IEnumerable<SisOdonto.Application.Models.Patient.PatientDataModel>
+
+@{
+    ViewData["Title"] = "Consultar Pacientes";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Pacientes</h1>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <!-- /.card -->
+                    <div class="card">
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="tableData" class="table table-bordered table-striped table-hover">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Cpf)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Email)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Cellular)
+                                    </th>
+                                    <th style="width: 20%">
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @this.FormatDocument(item.Cpf)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Email)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Cellular)
+                                        </td>
+                                        <td class="text-right">
+                                            <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-search"></spam></a>
+                                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-pencil-alt"></spam></a>
+                                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-trash"></spam></a>
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+
+    </section>
+    <!-- /.content -->
+    <div class="row">
+        <div class="col-md-12 text-right" style=" float: right; position: absolute; right: 0.5rem; bottom: 1rem;">
+            <a asp-action="CreatePatient" class="btn btn-primary" data-modal="">
+                <span title="Cadastrar Paciente" class="fa fa-plus-circle"></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal fade in">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id="myModalContent"></div>
+        </div>
+    </div>
+</div>
+
+<div id="loadingoverlay">
+    <div class="cv-spinner">
+        <span class="spinner"></span>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    <script>
+            $(document).ready(function () {
+                SetModal();
+
+                $('#tableData').DataTable({
+                    "pageLength": 5,
+                    "displayStart": 5,
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": true,
+                    "responsive": false
+                });
+
+
+            });
+        </script>
+
+    <!-- Bootstrap 4 -->
+    <script src="~/theme/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="~/theme/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/theme/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/theme/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/theme/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/theme/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/theme/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/theme/plugins/jszip/jszip.min.js"></script>
+    <script src="~/theme/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/theme/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/theme/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/theme/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/theme/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/theme/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/theme/dist/js/demo.js"></script>
+    <!-- Page specific script -->
+
+    }
+
+
+
+

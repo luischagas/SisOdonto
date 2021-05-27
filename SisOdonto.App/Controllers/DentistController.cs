@@ -12,7 +12,7 @@ namespace SisOdonto.App.Controllers
         #region Fields
 
         private readonly IDentistService _dentistService;
-
+        
         #endregion Fields
 
         #region Constructors
@@ -64,7 +64,7 @@ namespace SisOdonto.App.Controllers
 
             var url = Url.Action("Index", "Dentist");
 
-            return Json(new { success = true, url });
+            return Json(new { success = true, url, messageText = "Dentista Cadastrado com Sucesso!" });
         }
 
         [HttpGet]

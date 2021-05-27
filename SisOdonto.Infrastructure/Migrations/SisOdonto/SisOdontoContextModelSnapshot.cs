@@ -188,9 +188,7 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                     b.Property<string>("Telephone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("HealthInsuranceId")
-                        .IsUnique()
-                        .HasFilter("[HealthInsuranceId] IS NOT NULL");
+                    b.HasIndex("HealthInsuranceId");
 
                     b.ToTable("Patients");
                 });
@@ -235,8 +233,8 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
             modelBuilder.Entity("SisOdonto.Domain.Entities.Patient", b =>
                 {
                     b.HasOne("SisOdonto.Domain.Entities.HealthInsurance", "HealthInsurance")
-                        .WithOne()
-                        .HasForeignKey("SisOdonto.Domain.Entities.Patient", "HealthInsuranceId")
+                        .WithMany("Patients")
+                        .HasForeignKey("HealthInsuranceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -247,6 +245,11 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                         .IsRequired();
 
                     b.Navigation("HealthInsurance");
+                });
+
+            modelBuilder.Entity("SisOdonto.Domain.Entities.HealthInsurance", b =>
+                {
+                    b.Navigation("Patients");
                 });
 
             modelBuilder.Entity("SisOdonto.Domain.Entities.Dentist", b =>

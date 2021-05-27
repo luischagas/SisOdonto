@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using SisOdonto.Domain.Enums.HealthInsurance;
-using System;
+using System.Collections.Generic;
 
 namespace SisOdonto.Domain.Entities
 {
@@ -8,14 +8,18 @@ namespace SisOdonto.Domain.Entities
     {
         #region Constructors
 
+        private IList<Patient> _patients;
+
         public HealthInsurance(string name, ETypeHealthInsurance type)
         {
             Name = name;
             Type = type;
+            _patients = new List<Patient>();
         }
 
         protected HealthInsurance()
         {
+            _patients = new List<Patient>();
         }
 
         #endregion Constructors
@@ -24,6 +28,7 @@ namespace SisOdonto.Domain.Entities
 
         public string Name { get; private set; }
         public ETypeHealthInsurance Type { get; private set; }
+        public IEnumerable<Patient> Patients => _patients;
 
         #endregion Properties
 
@@ -44,6 +49,7 @@ namespace SisOdonto.Domain.Entities
             Name = name;
             Type = type;
         }
+
         private void ValidateName()
         {
             RuleFor(d => d.Name)

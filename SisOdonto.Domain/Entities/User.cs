@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using System;
+using SisOdonto.Domain.Utils;
 
 namespace SisOdonto.Domain.Entities
 {
@@ -68,6 +69,8 @@ namespace SisOdonto.Domain.Entities
                 .NotEmpty()
                 .WithMessage("O CPF deve ser preenchido")
                 .When(c => string.IsNullOrEmpty(c.Cpf) is false);
+            RuleFor(f => DocValidation.Validate(f.Cpf)).Equal(true)
+                .WithMessage("O CPF fornecido é inválido.");
         }
 
         private void ValidateDistrict()
@@ -95,7 +98,7 @@ namespace SisOdonto.Domain.Entities
         private void ValidateNumber()
         {
             RuleFor(d => d.Number)
-                .Length(3, 100)
+                .Length(1, 100)
                 .WithMessage("O número deve ter entre 1 e 100 caracteres.");
         }
 
