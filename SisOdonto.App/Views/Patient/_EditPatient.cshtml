@@ -93,14 +93,14 @@
             <div class="col-6">
                 <label asp-for="HealthInsuranceId" class="control-label"></label>
                 <select asp-for="HealthInsuranceId" class="form-control" asp-items="@(new SelectList(Model.HealthInsurances, "Id", "Name"))">
-                    <option value="">Convênio</option>
+                    <option value="">Selecione</option>
                 </select>
             </div>
 
             <div class="col-6">
                 <label asp-for="MaritalStatus" class="control-label"></label>
                 <select asp-for="MaritalStatus" class="form-control">
-                    <option value="">Estado Civil</option>
+                    <option value="">Selecione</option>
                     <option value="1">Solteiro</option>
                     <option value="2">Casado</option>
                     <option value="3">Divorciado</option>
@@ -112,7 +112,7 @@
             <div class="col-6">
                 <label asp-for="Gender" class="control-label"></label>
                 <select asp-for="Gender" class="form-control">
-                    <option value="">Gênero</option>
+                    <option value="">Selecione</option>
                     <option value="1">Masculino</option>
                     <option value="2">Feminino</option>
                     <option value="3">Outro</option>

@@ -16,7 +16,7 @@ namespace SisOdonto.Domain.Entities
 
         #region Constructors
 
-        public Dentist(Guid id, DateTimeOffset birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, string street, string cro, EExpertise expertise)
+        public Dentist(Guid id, DateTime birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, string street, string cro, EExpertise expertise)
         {
             Id = id;
             BirthDate = birthDate;
@@ -60,7 +60,7 @@ namespace SisOdonto.Domain.Entities
                 _schedules.Add(scheduling);
         }
 
-        public void Update(DateTimeOffset birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, string street, string cro, EExpertise expertise)
+        public void Update(DateTime birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, string street, string cro, EExpertise expertise)
         {
             BirthDate = birthDate;
             Cep = cep;

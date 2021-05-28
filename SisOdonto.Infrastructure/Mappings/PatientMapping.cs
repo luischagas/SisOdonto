@@ -15,7 +15,7 @@ namespace SisOdonto.Infrastructure.Mappings
 
             builder
                 .Property(s => s.CreatedOn)
-                .HasColumnType("datetimeoffset")
+                .HasColumnType("datetime")
                 .IsRequired();
 
             builder
@@ -44,8 +44,7 @@ namespace SisOdonto.Infrastructure.Mappings
             builder
                 .HasOne(i => i.HealthInsurance)
                 .WithMany(hi => hi.Patients)
-                .HasForeignKey(b => b.HealthInsuranceId)
-                .IsRequired();
+                .HasForeignKey(b => b.HealthInsuranceId);
 
             builder
                 .Ignore(p => p.CascadeMode);

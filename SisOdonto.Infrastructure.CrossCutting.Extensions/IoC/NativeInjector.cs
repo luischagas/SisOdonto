@@ -31,6 +31,8 @@ namespace SisOdonto.Infrastructure.CrossCutting.IoC
             services.AddScoped<IAttendantService, AttendantService>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<ISchedulingRepository, SchedulingRepository>();
+            services.AddScoped<ISchedulingService, SchedulingService>();
 
             return services;
         }

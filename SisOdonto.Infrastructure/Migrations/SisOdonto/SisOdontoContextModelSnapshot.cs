@@ -25,8 +25,8 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -38,7 +38,8 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .IsClustered(false);
 
                     b.ToTable("HealthInsurances");
                 });
@@ -49,11 +50,11 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
 
-                    b.Property<DateTimeOffset>("Datetime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("Datetime")
+                        .HasColumnType("datetime");
 
                     b.Property<Guid>("DentistId")
                         .HasColumnType("uniqueidentifier");
@@ -67,7 +68,14 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                     b.Property<Guid>("PatientId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TypeExpertise")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id")
+                        .IsClustered(false);
 
                     b.HasIndex("DentistId");
 
@@ -82,8 +90,8 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTimeOffset>("BirthDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Cep")
                         .IsRequired()
@@ -100,8 +108,8 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                         .IsRequired()
                         .HasColumnType("varchar(100)");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("District")
                         .IsRequired()
@@ -130,7 +138,8 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                         .IsRequired()
                         .HasColumnType("varchar(100)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .IsClustered(false);
 
                     b.ToTable("Users");
                 });
@@ -175,7 +184,7 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("HealthInsuranceId")
+                    b.Property<Guid?>("HealthInsuranceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("MaritalStatus")
@@ -234,9 +243,7 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                 {
                     b.HasOne("SisOdonto.Domain.Entities.HealthInsurance", "HealthInsurance")
                         .WithMany("Patients")
-                        .HasForeignKey("HealthInsuranceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HealthInsuranceId");
 
                     b.HasOne("SisOdonto.Domain.Entities.User", null)
                         .WithOne()

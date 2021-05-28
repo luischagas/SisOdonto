@@ -14,12 +14,13 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HealthInsurances", x => x.Id);
+                    table.PrimaryKey("PK_HealthInsurances", x => x.Id)
+                        .Annotation("SqlServer:Clustered", false);
                 });
 
             migrationBuilder.CreateTable(
@@ -27,7 +28,7 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BirthDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     Cep = table.Column<string>(type: "varchar(100)", nullable: false),
                     City = table.Column<string>(type: "varchar(100)", nullable: false),
                     Complement = table.Column<string>(type: "varchar(100)", nullable: true),
@@ -38,12 +39,13 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                     Number = table.Column<string>(type: "varchar(100)", nullable: false),
                     State = table.Column<string>(type: "varchar(100)", nullable: false),
                     Street = table.Column<string>(type: "varchar(100)", nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id)
+                        .Annotation("SqlServer:Clustered", false);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,7 +58,8 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Attendants", x => x.Id);
+                    table.PrimaryKey("PK_Attendants", x => x.Id)
+                        .Annotation("SqlServer:Clustered", false);
                     table.ForeignKey(
                         name: "FK_Attendants_Users_Id",
                         column: x => x.Id,
@@ -75,7 +78,8 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Dentists", x => x.Id);
+                    table.PrimaryKey("PK_Dentists", x => x.Id)
+                        .Annotation("SqlServer:Clustered", false);
                     table.ForeignKey(
                         name: "FK_Dentists_Users_Id",
                         column: x => x.Id,
@@ -91,20 +95,21 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Cellular = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    HealthInsuranceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    HealthInsuranceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     MaritalStatus = table.Column<int>(type: "int", nullable: false),
                     Occupation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Telephone = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Patients", x => x.Id);
+                    table.PrimaryKey("PK_Patients", x => x.Id)
+                        .Annotation("SqlServer:Clustered", false);
                     table.ForeignKey(
                         name: "FK_Patients_HealthInsurances_HealthInsuranceId",
                         column: x => x.HealthInsuranceId,
                         principalTable: "HealthInsurances",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Patients_Users_Id",
                         column: x => x.Id,
@@ -118,16 +123,19 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Datetime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Datetime = table.Column<DateTime>(type: "datetime", nullable: false),
                     DentistId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Obs = table.Column<string>(type: "varchar(100)", nullable: true),
                     PatientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    TypeExpertise = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Schedules", x => x.Id);
+                    table.PrimaryKey("PK_Schedules", x => x.Id)
+                        .Annotation("SqlServer:Clustered", false);
                     table.ForeignKey(
                         name: "FK_Schedules_Dentists_DentistId",
                         column: x => x.DentistId,
@@ -145,9 +153,7 @@ namespace SisOdonto.Infrastructure.Migrations.SisOdonto
             migrationBuilder.CreateIndex(
                 name: "IX_Patients_HealthInsuranceId",
                 table: "Patients",
-                column: "HealthInsuranceId",
-                unique: true,
-                filter: "[HealthInsuranceId] IS NOT NULL");
+                column: "HealthInsuranceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Schedules_DentistId",

@@ -4,6 +4,7 @@ using SisOdonto.Domain.Interfaces.Repositories;
 using SisOdonto.Infrastructure.Context;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SisOdonto.Infrastructure.Repositories
@@ -49,6 +50,21 @@ namespace SisOdonto.Infrastructure.Repositories
         public async Task<IEnumerable<Patient>> GetAllAsync()
         {
             return await _patients
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Patient>> GetAllParticularAsync()
+        {
+            return await _patients
+                .Where(p => p.HealthInsuranceId == null)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Patient>> GetAllWithHealthInsuranceAsync()
+        {
+            return await _patients
+                .Include(p => p.HealthInsurance)
+                .Where(p => p.HealthInsuranceId != null)
                 .ToListAsync();
         }
 

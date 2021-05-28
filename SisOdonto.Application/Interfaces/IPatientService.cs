@@ -15,7 +15,12 @@ namespace SisOdonto.Application.Interfaces
 
         Task<PatientDataModel> Get(Guid id);
 
+        Task<PatientDataModel> GetByCpf(string cpf);
+
         Task<IEnumerable<PatientDataModel>> GetAll();
+
+        Task<IEnumerable<PatientDataModel>> GetAllToReport(bool particular);
+
         Task Update(PatientDataModel request);
         #endregion Methods
     }

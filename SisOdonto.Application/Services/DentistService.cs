@@ -110,6 +110,12 @@ namespace SisOdonto.Application.Services
                 return;
             }
 
+            if (request.BirthDate == DateTime.MinValue)
+            {
+                Notify("Data inválida");
+                return;
+            }
+
             var userId = Guid.NewGuid();
 
             if (request.CreateUser)
@@ -174,6 +180,12 @@ namespace SisOdonto.Application.Services
             if (dentist is null)
             {
                 Notify("Dados do Dentista não encontrado.");
+                return;
+            }
+
+            if (request.BirthDate == DateTime.MinValue)
+            {
+                Notify("Data inválida");
                 return;
             }
 

@@ -9,7 +9,7 @@ namespace SisOdonto.Domain.Entities
     {
         #region Properties
 
-        public DateTimeOffset BirthDate { get; protected set; }
+        public DateTime BirthDate { get; protected set; }
         public string Cep { get; protected set; }
         public string City { get; protected set; }
         public string Complement { get; protected set; }

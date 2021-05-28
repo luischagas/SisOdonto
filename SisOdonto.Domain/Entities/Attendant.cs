@@ -7,7 +7,7 @@ namespace SisOdonto.Domain.Entities
     {
         #region Constructors
 
-        public Attendant(Guid id, DateTimeOffset birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, string street, string telephone, string cellular)
+        public Attendant(Guid id, DateTime birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, string street, string telephone, string cellular)
         {
             Id = id;
             BirthDate = birthDate;
@@ -41,7 +41,7 @@ namespace SisOdonto.Domain.Entities
 
         #region Methods
 
-        public void Update(DateTimeOffset birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, string street, string telephone, string cellular)
+        public void Update(DateTime birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, string street, string telephone, string cellular)
         {
             BirthDate = birthDate;
             Cep = cep;

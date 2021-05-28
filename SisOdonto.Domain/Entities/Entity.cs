@@ -14,7 +14,7 @@ namespace SisOdonto.Domain.Entities
         {
             Id = SequentialGuidGenerator.Instance.NewGuid();
             IsDeleted = false;
-            CreatedOn = DateTimeOffset.UtcNow;
+            CreatedOn = DateTime.Now;
             ValidationResult = new ValidationResult();
         }
 
@@ -24,7 +24,7 @@ namespace SisOdonto.Domain.Entities
 
         public Guid Id { get; protected set; }
 
-        public DateTimeOffset CreatedOn { get; protected set; }
+        public DateTime CreatedOn { get; protected set; }
 
         public bool IsDeleted { get; protected set; }
 

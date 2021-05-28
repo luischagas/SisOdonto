@@ -14,7 +14,7 @@ namespace SisOdonto.Domain.Entities
 
         #region Constructors
 
-        public Patient(Guid id, DateTimeOffset birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, Guid healthInsuranceId, string street, EMaritalStatus maritalStatus, EGender gender, string occupation, string telephone, string cellular)
+        public Patient(Guid id, DateTime birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, Guid? healthInsuranceId, string street, EMaritalStatus maritalStatus, EGender gender, string occupation, string telephone, string cellular)
         {
             Id = id;
             BirthDate = birthDate;
@@ -49,7 +49,7 @@ namespace SisOdonto.Domain.Entities
         public string Cellular { get; private set; }
         public EGender Gender { get; private set; }
         public HealthInsurance HealthInsurance { get; private set; }
-        public Guid HealthInsuranceId { get; private set; }
+        public Guid? HealthInsuranceId { get; private set; }
         public EMaritalStatus MaritalStatus { get; private set; }
         public string Occupation { get; private set; }
         public IEnumerable<Scheduling> Schedules => _schedules;
@@ -59,7 +59,7 @@ namespace SisOdonto.Domain.Entities
 
         #region Methods
 
-        public void Update(DateTimeOffset birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, string street, EMaritalStatus maritalStatus, EGender gender, string occupation, string telephone, string cellular)
+        public void Update(DateTime birthDate, string cep, string city, string complement, string cpf, string district, string email, string name, string number, string state, string street, EMaritalStatus maritalStatus, EGender gender, string occupation, string telephone, string cellular)
         {
             BirthDate = birthDate;
             Cep = cep;

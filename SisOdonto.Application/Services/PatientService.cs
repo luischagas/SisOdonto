@@ -55,6 +55,12 @@ namespace SisOdonto.Application.Services
                 return;
             }
 
+            if (request.BirthDate == DateTime.MinValue)
+            {
+                Notify("Data inválida");
+                return;
+            }
+
             var userId = Guid.NewGuid();
 
             if (request.CreateUser)
@@ -174,12 +180,53 @@ namespace SisOdonto.Application.Services
                     HealthInsuranceId = patient.HealthInsuranceId,
                     Name = patient.Name,
                     HealthInsurances = await _healthInsuranceService.GetAll(),
-                    HealthInsurance = new HealthInsuranceDataModel()
+                };
+
+                if (patient.HealthInsurance is not null)
+                {
+                    patientModel.HealthInsurance = new HealthInsuranceDataModel()
                     {
                         Id = patient.HealthInsurance.Id,
                         Name = patient.HealthInsurance.Name,
                         Type = patient.HealthInsurance.Type
-                    }
+                    };
+                }
+            }
+
+            return patientModel;
+        }
+
+        public async Task<PatientDataModel> GetByCpf(string cpf)
+        {
+            PatientDataModel patientModel = null;
+
+            var patient = await _patientRepository.GetAsync(cpf);
+
+            if (patient is null)
+                Notify("Dados do Paciente não encontrado.");
+            else
+            {
+                patientModel = new PatientDataModel
+                {
+                    Id = patient.Id,
+                    BirthDate = patient.BirthDate,
+                    Cep = patient.Cep,
+                    City = patient.City,
+                    Complement = patient.Complement,
+                    Cpf = patient.Cpf,
+                    Telephone = patient.Telephone,
+                    Cellular = patient.Cellular,
+                    Street = patient.Street,
+                    Number = patient.Number,
+                    State = patient.State,
+                    District = patient.District,
+                    Email = patient.Email,
+                    Gender = patient.Gender,
+                    MaritalStatus = patient.MaritalStatus,
+                    Occupation = patient.Occupation,
+                    HealthInsuranceId = patient.HealthInsuranceId,
+                    Name = patient.Name,
+                    HealthInsurances = await _healthInsuranceService.GetAll(),
                 };
             }
 
@@ -220,6 +267,57 @@ namespace SisOdonto.Application.Services
             return patientsModel;
         }
 
+        public async Task<IEnumerable<PatientDataModel>> GetAllToReport(bool particular)
+        {
+            IEnumerable<Patient> patients = null;
+
+            if (particular)
+                patients = await _patientRepository.GetAllParticularAsync();
+            else
+                patients = await _patientRepository.GetAllWithHealthInsuranceAsync();
+
+            var patientsModel = new List<PatientDataModel>();
+
+            foreach (var patient in patients)
+            {
+                var patientModel = new PatientDataModel()
+                {
+                    Id = patient.Id,
+                    BirthDate = patient.BirthDate,
+                    Cep = patient.Cep,
+                    City = patient.City,
+                    Complement = patient.Complement,
+                    Cpf = patient.Cpf,
+                    Telephone = patient.Telephone,
+                    Cellular = patient.Cellular,
+                    Street = patient.Street,
+                    Number = patient.Number,
+                    State = patient.State,
+                    District = patient.District,
+                    Email = patient.Email,
+                    Gender = patient.Gender,
+                    MaritalStatus = patient.MaritalStatus,
+                    Occupation = patient.Occupation,
+                    HealthInsuranceId = patient.HealthInsuranceId,
+                    Name = patient.Name
+                };
+
+                if (patient.HealthInsurance is not null)
+                {
+                    patientModel.HealthInsurance = new HealthInsuranceDataModel()
+                    {
+                        Id = patient.HealthInsurance.Id,
+                        Name = patient.HealthInsurance.Name,
+                        Type = patient.HealthInsurance.Type
+                    };
+                }
+
+                patientsModel.Add(patientModel);
+            }
+
+            return patientsModel;
+        }
+
         public async Task Update(PatientDataModel request)
         {
             var patient = await _patientRepository.GetAsync(request.Id);
@@ -230,11 +328,17 @@ namespace SisOdonto.Application.Services
                 return;
             }
 
+            if (request.BirthDate == DateTime.MinValue)
+            {
+                Notify("Data inválida");
+                return;
+            }
+
             patient.Update(request.BirthDate, request.Cep, request.City, request.Complement, request.Cpf.Replace(".", "").Replace("-", ""), request.District, request.Email, request.Name, request.Number, request.State, request.Street, request.MaritalStatus, request.Gender, request.Occupation, request.Telephone.Replace("(", "").Replace(")", "").Replace("-", "").Trim(), request.Cellular.Replace("(", "").Replace(")", "").Replace("-", "").Trim());
 
-            if (patient.HealthInsurance.Id != request.HealthInsuranceId)
+            if (patient.HealthInsurance.Id != request.HealthInsuranceId && request.HealthInsuranceId is not null)
             {
-                var newHealthInsurance = await _healthInsuranceRepository.GetAsync(request.HealthInsuranceId);
+                var newHealthInsurance = await _healthInsuranceRepository.GetAsync((Guid)request.HealthInsuranceId);
 
                 patient.SetHealthInsurance(newHealthInsurance);
             }

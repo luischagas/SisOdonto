@@ -1,0 +1,149 @@
+﻿@model SisOdonto.Application.Models.Scheduling.SchedulingDataModel
+
+@{
+    ViewData["Title"] = "Cadastro de Agendamento";
+    ViewData["ExpertiseDentist"] = new SelectList(Model.Dentists, "Id", "Expertise");
+}
+
+<div class="modal-header">
+    <h4 class="modal-title">@ViewData["Title"]</h4>
+    <button type="button" class="close" data-dismiss="modal">
+        <span aria-hidden="true">×</span><span class="sr-only">Fechar</span>
+    </button>
+</div>
+
+<div id="modalBody" class="modal-body">
+    <form asp-action="Create">
+        <div class="row">
+
+
+
+            <vc:Summary></vc:Summary>
+
+            <div class="col-6">
+                <label asp-for="Patient.Cpf" class="control-label"></label>
+                <input asp-for="Patient.Cpf" class="form-control" data-inputmask='"mask": "999.999.999-99"' data-mask />
+                <span asp-validation-for="Patient.Cpf" class="text-danger"></span>
+            </div>
+
+            <input type="hidden" asp-for="Patient.Id" />
+
+            <div class="col-6">
+                <label asp-for="Patient.Name" class="control-label"></label>
+                <input asp-for="Patient.Name" class="form-control" readonly />
+                <span asp-validation-for="Patient.Name" class="text-danger"></span>
+            </div>
+
+            <div class="col-6">
+                <label asp-for="Patient.BirthDate" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                    </div>
+                    <input asp-for="Patient.BirthDate" type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask readonly>
+                </div>
+
+                <span asp-validation-for="Patient.BirthDate" class="text-danger"></span>
+            </div>
+
+            <div class="col-4">
+                <label asp-for="Patient.Street" class="control-label"></label>
+                <input asp-for="Patient.Street" class="form-control" readonly />
+                <span asp-validation-for="Patient.Street" class="text-danger"></span>
+            </div>
+
+            <div class="col-2">
+                <label asp-for="Patient.Number" class="control-label"></label>
+                <input asp-for="Patient.Number" class="form-control" readonly />
+                <span asp-validation-for="Patient. Number" class="text-danger"></span>
+            </div>
+            <div class="col-6">
+                <label asp-for="Patient.Complement" class="control-label"></label>
+                <input asp-for="Patient.Complement" class="form-control" readonly />
+                <span asp-validation-for="Patient.Complement" class="text-danger"></span>
+            </div>
+
+            <div class="col-6">
+                <label asp-for="Patient.District" class="control-label"></label>
+                <input asp-for="Patient.District" class="form-control" readonly />
+                <span asp-validation-for="Patient.District" class="text-danger"></span>
+            </div>
+
+            <div class="col-6">
+                <label asp-for="Patient.City" class="control-label"></label>
+                <input asp-for="Patient.City" class="form-control" readonly />
+                <span asp-validation-for="Patient.City" class="text-danger"></span>
+            </div>
+
+            <div class="col-6">
+                <label asp-for="Patient.State" class="control-label"></label>
+                <input asp-for="Patient.State" class="form-control" readonly />
+                <span asp-validation-for="Patient.State" class="text-danger"></span>
+            </div>
+
+            <div class="col-6">
+                <label asp-for="DentistId" class="control-label"></label>
+                <select asp-for="DentistId" class="form-control" asp-items="@(new SelectList(Model.Dentists, "Id", "Name"))" onchange="GetExpertise(this)">
+                    <option value="">Selecione</option>
+                </select>
+            </div>
+
+            <div class="col-6">
+                <label asp-for="TypeExpertise" class="control-label"></label>
+                <input asp-for="TypeExpertise" class="form-control" readonly />
+                <span asp-validation-for="TypeExpertise" class="text-danger"></span>
+            </div>
+
+            <div class="col-6">
+                <label asp-for="DateTime" class="control-label"></label>
+                <input asp-for="DateTime" class="form-control" />
+                <span asp-validation-for="DateTime" class="text-danger"></span>
+            </div>
+
+            <div class="col-6">
+                <label asp-for="Type" class="control-label"></label>
+                <select asp-for="Type" class="form-control">
+                    <option value="">Selecione</option>
+                    <option value="1">Particular</option>
+                    <option value="2">Convênio</option>
+
+                </select>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="Obs" class="control-label"></label>
+                <textarea asp-for="Obs" class="form-control"></textarea>
+                <span asp-validation-for="Obs" class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <div class="modal-footer justify-content-between" style="border-top: 0 !important; padding-right: 0 !important; padding-left: 0 !important;">
+            <button type="button" class="btn btn-default" data-dismiss="modal" style="margin: 0 !important;">Fechar</button>
+            <input type="submit" value="Cadastrar" style="margin: 0 !important;" class="btn btn-primary toastrDefaultSuccess" />
+        </div>
+
+    </form>
+</div>
+
+
+
+<script>
+    GetDataPacient();
+</script>
+
+
+<script>
+    $(function () {
+        $('[data-mask]').inputmask();
+
+        $('#Cpf').inputmask();
+
+        document.getElementById('TypeExpertise').value = '';
+
+    });
+
+ 
+
+</script>
+

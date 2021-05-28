@@ -13,15 +13,16 @@ namespace SisOdonto.Application.Models.Patient
 
         public Guid Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [DisplayName("Data de Nascimento")]
-        public DateTimeOffset BirthDate { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime BirthDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [DisplayName("CEP")]
         public string Cep { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [DisplayName("Cidade")]
         public string City { get; set; }
 
@@ -37,52 +38,51 @@ namespace SisOdonto.Application.Models.Patient
         public EGender Gender { get; set; }
 
         [DisplayName("Bairro")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string District { get; set; }
 
         [DisplayName("E-mail")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string Email { get; set; }
 
         [DisplayName("Estado Civil")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public EMaritalStatus MaritalStatus { get; set; }
 
         [DisplayName("Nome")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string Name { get; set; }
 
         [DisplayName("Número")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string Number { get; set; }
 
         [DisplayName("Estado")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string State { get; set; }
 
         [DisplayName("Logradouro")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string Street { get; set; }
 
         [DisplayName("Criar Usuário?")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public bool CreateUser { get; set; }
 
         [DisplayName("Profissão")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string Occupation { get; set; }
 
         [DisplayName("Telefone")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string Telephone { get; set; }
 
         [DisplayName("Celular")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string Cellular { get; set; }
 
-        [Required]
         [DisplayName("Convênio")]
-        public Guid HealthInsuranceId { get; set; }
+        public Guid? HealthInsuranceId { get; set; }
 
         public HealthInsuranceDataModel HealthInsurance { get; set; }
 

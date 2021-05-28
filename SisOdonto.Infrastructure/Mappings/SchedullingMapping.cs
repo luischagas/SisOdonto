@@ -18,7 +18,7 @@ namespace SisOdonto.Infrastructure.Mappings
 
             builder
                 .Property(s => s.CreatedOn)
-                .HasColumnType("datetimeoffset")
+                .HasColumnType("datetime")
                 .IsRequired();
 
             builder
@@ -27,7 +27,7 @@ namespace SisOdonto.Infrastructure.Mappings
 
             builder
                 .Property(s => s.Datetime)
-                .HasColumnType("datetimeoffset")
+                .HasColumnType("datetime")
                 .IsRequired();
 
             builder

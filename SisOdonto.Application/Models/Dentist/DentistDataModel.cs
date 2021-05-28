@@ -11,15 +11,16 @@ namespace SisOdonto.Application.Models.Dentist
 
         public Guid Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [DisplayName("Data de Nascimento")]
-        public DateTimeOffset BirthDate { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime BirthDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [DisplayName("CEP")]
         public string Cep { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [DisplayName("Cidade")]
         public string City { get; set; }
 
@@ -35,35 +36,35 @@ namespace SisOdonto.Application.Models.Dentist
         public string Cro { get; set; }
 
         [DisplayName("Bairro")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string District { get; set; }
 
         [DisplayName("E-mail")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string Email { get; set; }
 
         [DisplayName("Especialidade")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public EExpertise Expertise { get; set; }
 
         [DisplayName("Nome")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string Name { get; set; }
 
         [DisplayName("Número")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string Number { get; set; }
 
         [DisplayName("Estado")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string State { get; set; }
 
         [DisplayName("Logradouro")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string Street { get; set; }
 
         [DisplayName("Criar Usuário?")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public bool CreateUser { get; set; }
 
         #endregion Properties

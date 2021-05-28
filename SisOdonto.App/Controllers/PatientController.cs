@@ -48,6 +48,18 @@ namespace SisOdonto.App.Controllers
             return PartialView("_DetailsPatient", patient);
         }
 
+        [HttpGet]
+        [Route("rel-patients")]
+        public async Task<IActionResult> GetPatientsParticular(bool particular)
+        {
+            var patients = await _patientService.GetAllToReport(particular);
+
+            if (ValidOperation() is false)
+                return NotFound();
+
+            return View("Report", patients);
+        }
+
         public async Task<IActionResult> CreatePatient()
         {
             var patientDataModel = new PatientDataModel

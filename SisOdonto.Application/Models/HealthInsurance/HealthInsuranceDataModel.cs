@@ -11,12 +11,12 @@ namespace SisOdonto.Application.Models.HealthInsurance
 
         public Guid Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [DisplayName("Nome")]
         public string Name { get; set; }
 
         [DisplayName("Tipo")]
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public ETypeHealthInsurance Type { get; set; }
 
         #endregion Properties

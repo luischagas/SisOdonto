@@ -12,6 +12,9 @@ namespace SisOdonto.Domain.Interfaces.Repositories
         Task AddAsync(Patient patient);
 
         Task<IEnumerable<Patient>> GetAllAsync();
+        Task<IEnumerable<Patient>> GetAllParticularAsync();
+
+        Task<IEnumerable<Patient>> GetAllWithHealthInsuranceAsync();
 
         Task<Patient> GetAsync(Guid id);
 
