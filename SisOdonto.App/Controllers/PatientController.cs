@@ -3,6 +3,7 @@ using SisOdonto.Application.Interfaces;
 using SisOdonto.Application.Models.Patient;
 using SisOdonto.Domain.Interfaces.Notification;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SisOdonto.App.Controllers
@@ -49,15 +50,25 @@ namespace SisOdonto.App.Controllers
         }
 
         [HttpGet]
-        [Route("rel-patients")]
-        public async Task<IActionResult> GetPatientsParticular(bool particular)
+        [Route("report")]
+        public async Task<IActionResult> Report()
         {
-            var patients = await _patientService.GetAllToReport(particular);
+            var patients = await _patientService.GetAllToReport();
 
             if (ValidOperation() is false)
                 return NotFound();
 
-            return View("Report", patients);
+            var patientsDataModel = new PatientDataModels
+            {
+                Patient = patients,
+                Report = new ReportDataModel()
+                {
+                    CountHealthInsurancePatients = patients.Count(p => p.HealthInsurance is not null),
+                    CountParticularPatients = patients.Count(p => p.HealthInsurance is null)
+                }
+            };
+
+            return View("Report", patientsDataModel);
         }
 
         public async Task<IActionResult> CreatePatient()
@@ -156,7 +167,7 @@ namespace SisOdonto.App.Controllers
             await _patientService.Delete(id);
 
             if (ValidOperation() is false)
-                return PartialView("Index", await _patientService.GetAll());
+                return PartialView("_DeletePatient", await _patientService.Get(id));
 
             var url = Url.Action("Index", "Patient");
 

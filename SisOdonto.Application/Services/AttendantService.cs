@@ -135,7 +135,7 @@ namespace SisOdonto.Application.Services
 
                     await _userManager.ConfirmEmailAsync(user, code);
 
-                    await AddClaimAsync(new Claim("kind", "attendant"), Guid.Parse(user.Id));
+                    await AddClaims(userId);
 
                     _emailService.SendEmail(user.Email, "Credenciais de Acesso - SisOdonto", "Credenciais", $"Usuário: {user.Email} <br> Senha: {password}");
                 }
@@ -230,6 +230,29 @@ namespace SisOdonto.Application.Services
                     await _userManager.DeleteAsync(userManager);
             } else
                 Notify("Erro ao salvar dados.");
+        }
+
+        private async Task AddClaims(Guid userId)
+        {
+
+            await AddClaimAsync(new Claim("HealthInsurance", "Search"), userId);
+            await AddClaimAsync(new Claim("HealthInsurance", "Details"), userId);
+            await AddClaimAsync(new Claim("HealthInsurance", "Create"), userId);
+            await AddClaimAsync(new Claim("HealthInsurance", "Edit"), userId);
+            await AddClaimAsync(new Claim("HealthInsurance", "Delete"), userId);
+
+            await AddClaimAsync(new Claim("Patient", "Search"), userId);
+            await AddClaimAsync(new Claim("Patient", "Create"), userId);
+            await AddClaimAsync(new Claim("Patient", "Details"), userId);
+            await AddClaimAsync(new Claim("Patient", "Edit"), userId);
+            await AddClaimAsync(new Claim("Patient", "Delete"), userId);
+            await AddClaimAsync(new Claim("Patient", "Report"), userId);
+
+            await AddClaimAsync(new Claim("Scheduling", "Search"), userId);
+            await AddClaimAsync(new Claim("Scheduling", "Details"), userId);
+            await AddClaimAsync(new Claim("Scheduling", "Create"), userId);
+            await AddClaimAsync(new Claim("Scheduling", "Edit"), userId);
+            await AddClaimAsync(new Claim("Scheduling", "Delete"), userId);
         }
 
         #endregion Constructors

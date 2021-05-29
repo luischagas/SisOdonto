@@ -104,7 +104,7 @@ function GetDataPacient() {
                                 if (result.success) {
                                     $("#Patient_Id").val(result.data.id);
                                     $("#Patient_Name").val(result.data.name);
-                                    $("#Patient_BirthDate").val(result.data.birthDate);
+                                    $("#Patient_BirthDate").val(FormatStringData(result.data.birthDate));
                                     $("#Patient_Street").val(result.data.street);
                                     $("#Patient_Number").val(result.data.number);
                                     $("#Patient_Complement").val(result.data.complement);
@@ -135,6 +135,15 @@ function GetDataPacient() {
             });
         });
 }
+
+
+function FormatStringData(data) {
+
+    var newDate = new Date(data);
+
+    return newDate.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+}
+
 
 function BuscaCep() {
     $(document).ready(function () {

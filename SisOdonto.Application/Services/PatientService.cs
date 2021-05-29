@@ -10,6 +10,7 @@ using SisOdonto.Domain.Shared;
 using SisOdonto.Domain.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -24,6 +25,7 @@ namespace SisOdonto.Application.Services
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IHealthInsuranceService _healthInsuranceService;
         private readonly IHealthInsuranceRepository _healthInsuranceRepository;
+        private readonly ISchedulingRepository _schedulingRepository;
 
         #endregion Fields
 
@@ -35,7 +37,8 @@ namespace SisOdonto.Application.Services
             IPatientRepository patientRepository,
             IEmailService emailService,
             IHealthInsuranceService healthInsuranceService,
-            IHealthInsuranceRepository healthInsuranceRepository)
+            IHealthInsuranceRepository healthInsuranceRepository, 
+            ISchedulingRepository schedulingRepository)
             : base(unitOfWork, notifier, userManager)
         {
             _userManager = userManager;
@@ -43,6 +46,7 @@ namespace SisOdonto.Application.Services
             _emailService = emailService;
             _healthInsuranceService = healthInsuranceService;
             _healthInsuranceRepository = healthInsuranceRepository;
+            _schedulingRepository = schedulingRepository;
         }
 
         public async Task Create(PatientDataModel request)
@@ -81,7 +85,7 @@ namespace SisOdonto.Application.Services
 
                     await _userManager.ConfirmEmailAsync(user, code);
 
-                    await AddClaimAsync(new Claim("kind", "patient"), Guid.Parse(user.Id));
+                    await AddClaims(userId);
 
                     _emailService.SendEmail(user.Email, "Credenciais de Acesso - SisOdonto", "Credenciais", $"Usuário: {user.Email} <br> Senha: {password}");
                 }
@@ -125,6 +129,14 @@ namespace SisOdonto.Application.Services
             if (patient is null)
             {
                 Notify("Dados do Paciente não encontrado.");
+                return;
+            }
+
+            var scheduling = await _schedulingRepository.GetAllByPatientAsync(id);
+
+            if (scheduling.Any())
+            {
+                Notify("Não é possível excluir o paciente, pois existem agendamentos cadastrados para ele.");
                 return;
             }
 
@@ -267,14 +279,9 @@ namespace SisOdonto.Application.Services
             return patientsModel;
         }
 
-        public async Task<IEnumerable<PatientDataModel>> GetAllToReport(bool particular)
+        public async Task<IEnumerable<PatientDataModel>> GetAllToReport()
         {
-            IEnumerable<Patient> patients = null;
-
-            if (particular)
-                patients = await _patientRepository.GetAllParticularAsync();
-            else
-                patients = await _patientRepository.GetAllWithHealthInsuranceAsync();
+            var patients = await _patientRepository.GetAllAsync();
 
             var patientsModel = new List<PatientDataModel>();
 
@@ -315,6 +322,8 @@ namespace SisOdonto.Application.Services
                 patientsModel.Add(patientModel);
             }
 
+
+
             return patientsModel;
         }
 
@@ -336,7 +345,7 @@ namespace SisOdonto.Application.Services
 
             patient.Update(request.BirthDate, request.Cep, request.City, request.Complement, request.Cpf.Replace(".", "").Replace("-", ""), request.District, request.Email, request.Name, request.Number, request.State, request.Street, request.MaritalStatus, request.Gender, request.Occupation, request.Telephone.Replace("(", "").Replace(")", "").Replace("-", "").Trim(), request.Cellular.Replace("(", "").Replace(")", "").Replace("-", "").Trim());
 
-            if (patient.HealthInsurance.Id != request.HealthInsuranceId && request.HealthInsuranceId is not null)
+            if (patient.HealthInsurance?.Id != request.HealthInsuranceId && request.HealthInsuranceId is not null)
             {
                 var newHealthInsurance = await _healthInsuranceRepository.GetAsync((Guid)request.HealthInsuranceId);
 
@@ -353,6 +362,13 @@ namespace SisOdonto.Application.Services
 
             if (await CommitAsync() is false)
                 Notify("Erro ao salvar dados.");
+        }
+
+        private async Task AddClaims(Guid userId)
+        {
+            await AddClaimAsync(new Claim("Scheduling", "Search"), userId);
+            await AddClaimAsync(new Claim("Scheduling", "Details"), userId);
+            
         }
 
         #endregion Constructors

@@ -9,8 +9,11 @@ using SisOdonto.Domain.Interfaces.Repositories;
 using SisOdonto.Domain.Shared;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using SisOdonto.Domain.Enums.Dentist;
+using SisOdonto.Domain.Enums.User;
 
 namespace SisOdonto.Application.Services
 {
@@ -23,6 +26,7 @@ namespace SisOdonto.Application.Services
         private readonly IPatientRepository _patientRepository;
         private readonly IPatientService _patientService;
         private readonly ISchedulingRepository _schedulingRepository;
+        private readonly IAttendantRepository _attendantRepository;
 
         #endregion Fields
 
@@ -35,7 +39,8 @@ namespace SisOdonto.Application.Services
             IDentistService dentistService,
             IPatientService patientService,
             IDentistRepository dentistRepository,
-            IPatientRepository patientRepository)
+            IPatientRepository patientRepository, 
+            IAttendantRepository attendantRepository)
             : base(unitOfWork, notifier, userManager)
         {
             _schedulingRepository = schedulingRepository;
@@ -43,6 +48,7 @@ namespace SisOdonto.Application.Services
             _patientService = patientService;
             _dentistRepository = dentistRepository;
             _patientRepository = patientRepository;
+            _attendantRepository = attendantRepository;
         }
 
         public async Task Create(SchedulingDataModel request)
@@ -150,15 +156,27 @@ namespace SisOdonto.Application.Services
             return schedulingModel;
         }
 
-        public async Task<IEnumerable<SchedulingDataModel>> GetAll(string typeUser)
+        public async Task<IEnumerable<SchedulingDataModel>> GetAll(Guid userId)
         {
-            var schedulings = await _schedulingRepository.GetAllAsync();
+            IEnumerable<Scheduling> schedules = null;
 
-            var schedulingsModel = new List<SchedulingDataModel>();
+            var type = await GetTypeUser(userId);
 
-            foreach (var scheduling in schedulings)
+            if (type is ETypeUser.Attendant or ETypeUser.Admin)
+                schedules = await _schedulingRepository.GetAllAsync();
+            else
             {
-                schedulingsModel.Add(new SchedulingDataModel()
+                if (type is ETypeUser.Patient)
+                    schedules = await _schedulingRepository.GetAllByPatientAsync(userId);
+                else if (type is ETypeUser.Dentist)
+                    schedules = await _schedulingRepository.GetAllByDentistAsync(userId);
+            }
+
+            var schedulesModel = new List<SchedulingDataModel>();
+
+            foreach (var scheduling in schedules)
+            {
+                schedulesModel.Add(new SchedulingDataModel()
                 {
                     Id = scheduling.Id,
                     Patient = new PatientDataModel()
@@ -184,7 +202,7 @@ namespace SisOdonto.Application.Services
                 });
             }
 
-            return schedulingsModel;
+            return schedulesModel;
         }
 
         public async Task Update(SchedulingDataModel request)
@@ -237,6 +255,26 @@ namespace SisOdonto.Application.Services
 
             if (await CommitAsync() is false)
                 Notify("Erro ao salvar dados.");
+        }
+
+        public async Task<ETypeUser> GetTypeUser(Guid userId)
+        {
+            var dentist = await _dentistRepository.GetAsync(userId);
+
+            if (dentist is not null)
+                return ETypeUser.Dentist;
+
+            var patient = await _patientRepository.GetAsync(userId);
+
+            if (patient is not null)
+                return ETypeUser.Patient;
+
+            var attendant = await _attendantRepository.GetAsync(userId);
+
+            if (attendant is not null)
+                return ETypeUser.Attendant;
+
+            return ETypeUser.Admin;
         }
 
         #endregion Constructors

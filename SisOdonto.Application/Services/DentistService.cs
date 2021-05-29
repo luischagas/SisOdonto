@@ -9,6 +9,7 @@ using SisOdonto.Domain.Shared;
 using SisOdonto.Domain.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace SisOdonto.Application.Services
         #region Fields
 
         private readonly IDentistRepository _dentistRepository;
+        private readonly ISchedulingRepository _schedulingRepository;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmailService _emailService;
 
@@ -30,12 +32,13 @@ namespace SisOdonto.Application.Services
             INotifier notifier,
             UserManager<IdentityUser> userManager,
             IDentistRepository dentistRepository,
-            IEmailService emailService)
+            IEmailService emailService, ISchedulingRepository schedulingRepository)
             : base(unitOfWork, notifier, userManager)
         {
             _userManager = userManager;
             _dentistRepository = dentistRepository;
             _emailService = emailService;
+            _schedulingRepository = schedulingRepository;
         }
 
         public async Task<DentistDataModel> Get(Guid id)
@@ -136,7 +139,7 @@ namespace SisOdonto.Application.Services
 
                     await _userManager.ConfirmEmailAsync(user, code);
 
-                    await AddClaimAsync(new Claim("kind", "dentist"), Guid.Parse(user.Id));
+                    await AddClaims(userId);
 
                     _emailService.SendEmail(user.Email, "Credenciais de Acesso - SisOdonto", "Credenciais", $"Usuário: {user.Email} <br> Senha: {password}");
                 }
@@ -213,6 +216,14 @@ namespace SisOdonto.Application.Services
                 return;
             }
 
+            var scheduling = await _schedulingRepository.GetAllByDentistAsync(id);
+
+            if (scheduling.Any())
+            {
+                Notify("Não é possível excluir o dentista, pois existem agendamentos cadastrados para ele.");
+                return;
+            }
+
             dentist.Delete();
 
             if (dentist.IsValid())
@@ -231,6 +242,15 @@ namespace SisOdonto.Application.Services
                     await _userManager.DeleteAsync(userManager);
             } else
                 Notify("Erro ao salvar dados.");
+        }
+
+        private async Task AddClaims(Guid userId)
+        {
+            await AddClaimAsync(new Claim("Patient", "Search"), userId);
+            await AddClaimAsync(new Claim("Patient", "Details"), userId);
+
+            await AddClaimAsync(new Claim("Scheduling", "Search"), userId);
+            await AddClaimAsync(new Claim("Scheduling", "Details"), userId);
         }
 
         #endregion Constructors

@@ -19,7 +19,7 @@ namespace SisOdonto.Application.Interfaces
 
         Task<IEnumerable<PatientDataModel>> GetAll();
 
-        Task<IEnumerable<PatientDataModel>> GetAllToReport(bool particular);
+        Task<IEnumerable<PatientDataModel>> GetAllToReport();
 
         Task Update(PatientDataModel request);
         #endregion Methods

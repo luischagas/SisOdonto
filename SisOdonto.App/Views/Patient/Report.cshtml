@@ -1,5 +1,9 @@
 ﻿@using SisOdonto.Infrastructure.CrossCutting.Extensions
-@model IEnumerable<SisOdonto.Application.Models.Patient.PatientDataModel>
+@using System.Linq
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model SisOdonto.Application.Models.Patient.PatientDataModels
+
+
 
 @{
     ViewData["Title"] = "Relatório de Pacientes";
@@ -11,7 +15,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Pacientes</h1>
+                    <h1>Relatório de Pacientes</h1>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -30,23 +34,21 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Name)
+                                            Nome
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Cpf)
+                                            CPF
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Email)
+                                            Convênio
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Cellular)
-                                        </th>
-                                        <th style="width: 20%">
+                                            Celular
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model)
+                                    @foreach (var item in Model.Patient)
                                     {
                                         <tr>
                                             <td>
@@ -56,24 +58,29 @@
                                                 @this.FormatDocument(item.Cpf)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Email)
+                                                @this.FormatHealthInsurance(item.HealthInsurance)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Cellular)
-                                            </td>
-                                            <td class="text-right">
-                                                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-search"></spam></a>
-                                                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-pencil-alt"></spam></a>
-                                                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-trash"></spam></a>
                                             </td>
                                         </tr>
                                     }
                                 </tbody>
                             </table>
+                            <div class="row" style="padding-top: 3.0rem">
+                                <div class="col-6">
+                                    Total de Pacientes Particulares: <spam class="control-label" id="pacienteParticular" style="font-weight: bold">@Model.Report.CountParticularPatients</spam>
+                                </div>
+                                <div class="col-6">
+                                    Total de Pacientes Com Convênio: <spam class="control-label" id="pacienteConvenio" style="font-weight: bold">@Model.Report.CountHealthInsurancePatients</spam>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.card-body -->
+
                     </div>
                     <!-- /.card -->
+
                 </div>
                 <!-- /.col -->
             </div>
@@ -83,23 +90,9 @@
 
     </section>
     <!-- /.content -->
-    <div class="row">
-        <div class="col-md-12 text-right" style=" float: right; position: absolute; right: 0.5rem; bottom: 1rem;">
-            <a asp-action="CreatePatient" class="btn btn-primary" data-modal="">
-                <span title="Cadastrar Paciente" class="fa fa-plus-circle"></span>
-            </a>
-        </div>
-    </div>
+   
+    
 </div>
-
-<div id="myModal" class="modal fade in">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div id="myModalContent"></div>
-        </div>
-    </div>
-</div>
-
 <div id="loadingoverlay">
     <div class="cv-spinner">
         <span class="spinner"></span>
@@ -107,13 +100,30 @@
 </div>
 
 
-
-
 <script>
     $(document).ready(function () {
-        SetModal();
 
         $('#tableData').DataTable({
+            "buttons": [{
+                extend: 'pdf',
+                title: 'Relatório de Pacientes',
+                filename: 'relatorio_de_pacientes',
+                customize: function (doc) {
+                    doc.defaultStyle.alignment = 'center';
+                    doc.content[1].table.widths = ['25%', '25%', '25%', '25%'];
+                    doc.content.push(
+                        { text: 'Total de Pacientes Particulares: ' + $("#pacienteParticular").text(), margin: [240, 20, 20, 0] },
+                        { text: 'Total de Pacientes Com Convênio: ' + $("#pacienteConvenio").text(), margin: [252, 5, 20, 20] }
+                    );
+                    
+                },
+                exportOptions: {
+                    modifier: {
+                        page: 'current'
+                    }
+                },
+
+            }],
             "pageLength": 5,
             "displayStart": 5,
             "paging": true,
@@ -122,8 +132,8 @@
             "ordering": true,
             "info": true,
             "autoWidth": true,
-            "responsive": false
-        });
+            "responsive": true,
+        }).buttons().container().appendTo('#tableData_wrapper .col-md-6:eq(0)');
 
 
     });

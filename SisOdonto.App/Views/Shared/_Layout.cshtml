@@ -95,32 +95,32 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-header">CADASTROS</li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="Dentist" class="nav-link">
+                        <li supress-by-claim-name="Dentist" supress-by-claim-value="Search" class="nav-item">
+                            <a asp-area="" asp-controller="Dentist" asp-action="Index" class="nav-link">
                                 <i class="nav-icon fas fa-tooth"></i>
                                 <p>
                                     Dentista
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="Attendant" class="nav-link">
+                        <li supress-by-claim-name="Attendant" supress-by-claim-value="Search" class="nav-item">
+                            <a s asp-area="" asp-controller="Attendant" asp-action="Index" class="nav-link">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>
                                     Atendente
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="Patient" class="nav-link">
+                        <li supress-by-claim-name="Patient" supress-by-claim-value="Search" class="nav-item">
+                            <a asp-area="" asp-controller="Patient" asp-action="Index" class="nav-link">
                                 <i class="nav-icon fas fa-user-plus"></i>
                                 <p>
                                     Paciente
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="HealthInsurance" class="nav-link">
+                        <li supress-by-claim-name="HealthInsurance" supress-by-claim-value="Search"  class="nav-item">
+                            <a asp-area="" asp-controller="HealthInsurance" asp-action="Index" class="nav-link">
                                 <i class="nav-icon fas fa-notes-medical"></i>
                                 <p>
                                     Convênio
@@ -128,17 +128,17 @@
                             </a>
                         </li>
                         <li class="nav-header">AGENDAMENTOS</li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="Scheduling" class="nav-link">
+                        <li supress-by-claim-name="Scheduling" supress-by-claim-value="Search" class="nav-item">
+                            <a asp-area="" asp-controller="Scheduling" asp-action="Index" class="nav-link">
                                 <i class="nav-icon far fa-calendar-alt"></i>
                                 <p>
-                                    Agendar Consulta
+                                    Consultar Agendamentos
                                 </p>
                             </a>
                         </li>
                         <li class="nav-header">RELATÓRIOS</li>
-                        <li class="nav-item">
-                            <a href="../kanban.html" class="nav-link">
+                        <li supress-by-claim-name="Patient" supress-by-claim-value="Report"  class="nav-item">
+                            <a  asp-area="" asp-controller="Patient" asp-action="Report" class="nav-link">
                                 <i class="nav-icon far fa-file-pdf"></i>
                                 <p>
                                     Relatório de Pacientes

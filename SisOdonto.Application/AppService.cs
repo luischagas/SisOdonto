@@ -72,11 +72,10 @@ namespace SisOdonto.Application
 
             var userClaims = await _userManager.GetClaimsAsync(user);
 
-            if (userClaims.Any(c => string.Equals(c.Type, claim.Type, StringComparison.CurrentCultureIgnoreCase)) &&
-                userClaims.Any(c => string.Equals(c.Value, claim.Value, StringComparison.CurrentCultureIgnoreCase)))
+            if (userClaims.Any(c => string.Equals(c.Value, claim.Value, StringComparison.CurrentCultureIgnoreCase) && string.Equals(c.Type, claim.Type, StringComparison.CurrentCultureIgnoreCase)))
                 return;
 
-            var userClaim = userClaims.FirstOrDefault(uc => string.Equals(uc.Type, claim.Type, StringComparison.CurrentCultureIgnoreCase));
+            var userClaim = userClaims.FirstOrDefault(uc => string.Equals(uc.Type, claim.Type, StringComparison.CurrentCultureIgnoreCase) && string.Equals(uc.Value, claim.Value, StringComparison.CurrentCultureIgnoreCase));
 
             if (userClaim != null)
                 await _userManager.RemoveClaimAsync(user, userClaim);

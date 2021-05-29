@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Razor;
 using System;
+using SisOdonto.Application.Models.HealthInsurance;
+using SisOdonto.Domain.Entities;
 using SisOdonto.Domain.Enums.Dentist;
 
 namespace SisOdonto.Infrastructure.CrossCutting.Extensions
@@ -50,6 +52,16 @@ namespace SisOdonto.Infrastructure.CrossCutting.Extensions
             return "";
 
            
+        }
+
+        public static string FormatHealthInsurance(this RazorPage page, HealthInsuranceDataModel healthInsurance)
+        {
+            if (healthInsurance is null)
+                return "Particular";
+
+            return healthInsurance.Name;
+
+
         }
 
         #endregion Methods

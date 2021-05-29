@@ -7,6 +7,18 @@ using SisOdonto.Application.Models.HealthInsurance;
 
 namespace SisOdonto.Application.Models.Patient
 {
+    public class PatientDataModels
+    {
+        public PatientDataModels()
+        {
+            Patient = new List<PatientDataModel>();
+            Report = new ReportDataModel();
+        }
+
+        public IEnumerable<PatientDataModel> Patient { get; set; }
+        public ReportDataModel Report { get; set; }
+    }
+
     public class PatientDataModel
     {
         #region Properties

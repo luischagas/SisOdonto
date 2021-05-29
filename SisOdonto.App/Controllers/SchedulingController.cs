@@ -3,7 +3,11 @@ using SisOdonto.Application.Interfaces;
 using SisOdonto.Application.Models.Scheduling;
 using SisOdonto.Domain.Interfaces.Notification;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using SisOdonto.Application.Models.Patient;
 using SisOdonto.Infrastructure.CrossCutting.Extensions;
 
@@ -16,6 +20,7 @@ namespace SisOdonto.App.Controllers
         private readonly ISchedulingService _schedulingService;
         private readonly IDentistService _dentistService;
         private readonly IPatientService _patientService;
+        private readonly UserManager<IdentityUser> _userManager;
 
         #endregion Fields
 
@@ -23,12 +28,15 @@ namespace SisOdonto.App.Controllers
 
         public SchedulingController(INotifier notifier, 
             ISchedulingService schedulingService, 
-            IDentistService dentistService, IPatientService patientService)
-        : base(notifier)
+            IDentistService dentistService, 
+            IPatientService patientService, 
+            UserManager<IdentityUser> userManager)
+            : base(notifier)
         {
             _schedulingService = schedulingService;
             _dentistService = dentistService;
             _patientService = patientService;
+            _userManager = userManager;
         }
 
         #endregion Constructors
@@ -37,7 +45,9 @@ namespace SisOdonto.App.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var schedules = await _schedulingService.GetAll("teste");
+            var userId = _userManager.GetUserId(User);
+
+            var schedules = await _schedulingService.GetAll(Guid.Parse(userId));
 
             return View(schedules);
         }
@@ -152,13 +162,15 @@ namespace SisOdonto.App.Controllers
         [Route("delete-scheduling/{id:guid}")]
         public async Task<IActionResult> Remove(Guid id)
         {
+            var userId = _userManager.GetUserId(User);
+
             if (ModelState.IsValid is false)
-                return PartialView("Index", await _schedulingService.GetAll("teste"));
+                return PartialView("Index", await _schedulingService.GetAll(Guid.Parse(userId)));
 
             await _schedulingService.Delete(id);
 
             if (ValidOperation() is false)
-                return PartialView("Index", await _schedulingService.GetAll("teste"));
+                return PartialView("Index", await _schedulingService.GetAll(Guid.Parse(userId)));
 
             var url = Url.Action("Index", "Scheduling");
 

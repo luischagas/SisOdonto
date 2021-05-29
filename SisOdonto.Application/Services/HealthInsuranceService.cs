@@ -16,6 +16,7 @@ namespace SisOdonto.Application.Services
         #region Fields
 
         private readonly IHealthInsuranceRepository _healthInsuranceRepository;
+        private readonly IPatientRepository _patientRepository;
 
         #endregion Fields
 
@@ -24,10 +25,12 @@ namespace SisOdonto.Application.Services
         public HealthInsuranceService(IUnitOfWork unitOfWork,
             INotifier notifier,
             UserManager<IdentityUser> userManager,
-            IHealthInsuranceRepository dentistRepository)
+            IHealthInsuranceRepository dentistRepository, 
+            IPatientRepository patientRepository)
             : base(unitOfWork, notifier, userManager)
         {
             _healthInsuranceRepository = dentistRepository;
+            _patientRepository = patientRepository;
         }
 
         public async Task Create(HealthInsuranceDataModel request)
@@ -61,6 +64,14 @@ namespace SisOdonto.Application.Services
             if (healthInsurance is null)
             {
                 Notify("Dados do Convênio não encontrado.");
+                return;
+            }
+
+            var patient = await _patientRepository.GetByHealthInsuranceAsync(id);
+
+            if (patient is not null)
+            {
+                Notify("Não é possível excluir o convênio, pois existem pacientes associado a ele.");
                 return;
             }
 

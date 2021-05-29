@@ -46,6 +46,24 @@ namespace SisOdonto.Infrastructure.Migrations
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
+            var id = Guid.NewGuid();
+
+            migrationBuilder.InsertData("AspNetUsers",
+                new[]
+                {
+                    "Id", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed",
+                    "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed",
+                    "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount"
+                },
+                new object[]
+                {
+                    id.ToString(), "sisodontoinc@gmail.com", "sisodontoinc@gmail.com", "sisodontoinc@gmail.com",
+                    "sisodontoinc@gmail.com", true,
+                    "AQAAAAEAACcQAAAAEO3UonWBsvWboC65Fi5KxDHY0BWR6RXk5TMwPSIPebyYbPEs5NcEIjP6T8P1lC/j6g==",
+                    "LCWUHAB6NBV35PBYJPX7ETJ5AZLSN2J3", "77f56d50-a536-485e-8675-7a08f3aacdf7", null, false,
+                    false, null, true, 0
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
@@ -86,6 +104,16 @@ namespace SisOdonto.Infrastructure.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData("AspNetUserClaims",
+                new[]
+                {
+                    "UserId", "ClaimType", "ClaimValue"
+                },
+                new object[]
+                {
+                    id.ToString(), "Admin", "Admin" 
                 });
 
             migrationBuilder.CreateTable(

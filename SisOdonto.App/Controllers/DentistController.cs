@@ -120,7 +120,7 @@ namespace SisOdonto.App.Controllers
             await _dentistService.Delete(id);
 
             if (ValidOperation() is false)
-                return PartialView("Index", await _dentistService.GetAll());
+                return PartialView("_DeleteDentist", await _dentistService.Get(id));
 
             var url = Url.Action("Index", "Dentist");
 

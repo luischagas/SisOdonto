@@ -47,24 +47,14 @@ namespace SisOdonto.Infrastructure.Repositories
                 .FirstOrDefaultAsync(d => d.Cpf == cpf);
         }
 
+        public async Task<Patient> GetByHealthInsuranceAsync(Guid healthInsuranceId)
+        {
+            return await _patients
+                .FirstOrDefaultAsync(d => d.HealthInsuranceId == healthInsuranceId);
+        }
         public async Task<IEnumerable<Patient>> GetAllAsync()
         {
             return await _patients
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<Patient>> GetAllParticularAsync()
-        {
-            return await _patients
-                .Where(p => p.HealthInsuranceId == null)
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<Patient>> GetAllWithHealthInsuranceAsync()
-        {
-            return await _patients
-                .Include(p => p.HealthInsurance)
-                .Where(p => p.HealthInsuranceId != null)
                 .ToListAsync();
         }
 

@@ -1,6 +1,7 @@
 ﻿using SisOdonto.Application.Models.Scheduling;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SisOdonto.Application.Interfaces
@@ -11,7 +12,7 @@ namespace SisOdonto.Application.Interfaces
 
         Task<SchedulingDataModel> Get(Guid id);
 
-        Task<IEnumerable<SchedulingDataModel>> GetAll(string userType);
+        Task<IEnumerable<SchedulingDataModel>> GetAll(Guid userId);
 
         Task Create(SchedulingDataModel request);
 

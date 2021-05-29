@@ -62,9 +62,9 @@
                                             @Html.DisplayFor(modelItem => item.Cro)
                                         </td>
                                         <td class="text-right">
-                                            <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-search"></spam></a>
-                                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-pencil-alt"></spam></a>
-                                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-trash"></spam></a>
+                                            <a class="btn btn-info" supress-by-claim-name="Dentist" supress-by-claim-value="Details" asp-action="Details" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-search"></spam></a>
+                                            <a class="btn btn-warning" supress-by-claim-name="Dentist" supress-by-claim-value="Edit" asp-action="Edit" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-pencil-alt"></spam></a>
+                                            <a class="btn btn-danger" supress-by-claim-name="Dentist" supress-by-claim-value="Delete" asp-action="Delete" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-trash"></spam></a>
                                         </td>
                                     </tr>
                                 }
@@ -83,7 +83,7 @@
 
     </section>
     <!-- /.content -->
-    <div class="row">
+    <div class="row" supress-by-claim-name="Dentist" supress-by-claim-value="Create">
         <div class="col-md-12 text-right" style=" float: right; position: absolute; right: 0.5rem; bottom: 1rem;">
             <a asp-action="CreateDentist" class="btn btn-primary" data-modal="">
                 <span title="Cadastrar Dentista" class="fa fa-plus-circle"></span>
