@@ -25,9 +25,9 @@ update-database -context SisOdontoContext
 ## O que foi implementado?
 
 - .NET 5
-- ASP.NET MVC
+- ASP.NET Core MVC 5.0
 - Arquitetura Limpa
-- Entity Framework Core
+- Entity Framework Core 5
 - SQL Server
 - Autenticação no sistema com Identity com JWT
 - Template AdminLTE com Bootstrap
