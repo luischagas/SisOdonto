@@ -1,15 +1,30 @@
-﻿using System;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using MimeKit.Text;
 using SisOdonto.Domain.Interfaces.Services;
-using System.Threading.Tasks;
+using SisOdonto.Infrastructure.CrossCutting.Services.Models;
+using System;
 
 namespace SisOdonto.Infrastructure.CrossCutting.Services
 {
     public class EmailService : IEmailService
     {
+        #region Fields
+
+        private readonly EmailSettings _emailSettings;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public EmailService(EmailSettings emailSettings)
+        {
+            _emailSettings = emailSettings;
+        }
+
+        #endregion Constructors
+
         #region Methods
 
         public string BuildHtmlEmailBody(string shortTitle, string bodyMessage)
@@ -53,7 +68,7 @@ namespace SisOdonto.Infrastructure.CrossCutting.Services
 
             var email = new MimeMessage();
 
-            email.From.Add(MailboxAddress.Parse("sisodontoinc@gmail.com"));
+            email.From.Add(MailboxAddress.Parse(_emailSettings.Email));
 
             email.To.Add(MailboxAddress.Parse(to));
 
@@ -64,8 +79,8 @@ namespace SisOdonto.Infrastructure.CrossCutting.Services
             try
             {
                 using var smtp = new SmtpClient();
-                smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-                smtp.Authenticate("sisodontoinc@gmail.com", "sisodonto2021#");
+                smtp.Connect(_emailSettings.Host, 587, SecureSocketOptions.StartTls);
+                smtp.Authenticate(_emailSettings.Email, _emailSettings.Password);
                 smtp.Send(email);
                 smtp.Disconnect(true);
             }
@@ -74,7 +89,6 @@ namespace SisOdonto.Infrastructure.CrossCutting.Services
                 Console.WriteLine(e);
                 throw;
             }
-
         }
 
         #endregion Methods

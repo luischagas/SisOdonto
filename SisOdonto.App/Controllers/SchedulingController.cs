@@ -162,15 +162,13 @@ namespace SisOdonto.App.Controllers
         [Route("delete-scheduling/{id:guid}")]
         public async Task<IActionResult> Remove(Guid id)
         {
-            var userId = _userManager.GetUserId(User);
-
             if (ModelState.IsValid is false)
-                return PartialView("Index", await _schedulingService.GetAll(Guid.Parse(userId)));
+                return PartialView("_DeleteScheduling", await _schedulingService.Get(id));
 
             await _schedulingService.Delete(id);
 
             if (ValidOperation() is false)
-                return PartialView("Index", await _schedulingService.GetAll(Guid.Parse(userId)));
+                return PartialView("_DeleteScheduling", await _schedulingService.Get(id));
 
             var url = Url.Action("Index", "Scheduling");
 

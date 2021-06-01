@@ -115,7 +115,7 @@ namespace SisOdonto.App.Controllers
         public async Task<IActionResult> Remove(Guid id)
         {
             if (ModelState.IsValid is false)
-                return PartialView("Index", await _dentistService.GetAll());
+                return PartialView("_DeleteDentist", await _dentistService.Get(id));
 
             await _dentistService.Delete(id);
 

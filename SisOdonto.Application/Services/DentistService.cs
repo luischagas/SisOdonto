@@ -226,13 +226,7 @@ namespace SisOdonto.Application.Services
 
             dentist.Delete();
 
-            if (dentist.IsValid())
-                _dentistRepository.Update(dentist);
-            else
-            {
-                Notify(dentist.ValidationResult);
-                return;
-            }
+            _dentistRepository.Update(dentist);
 
             if (await CommitAsync())
             {
@@ -240,7 +234,8 @@ namespace SisOdonto.Application.Services
 
                 if (userManager is not null)
                     await _userManager.DeleteAsync(userManager);
-            } else
+            }
+            else
                 Notify("Erro ao salvar dados.");
         }
 

@@ -21,6 +21,7 @@ namespace SisOdonto.Application.Services
         private readonly IAttendantRepository _attendantRepository;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmailService _emailService;
+
         #endregion Fields
 
         #region Constructors
@@ -214,13 +215,7 @@ namespace SisOdonto.Application.Services
 
             attendant.Delete();
 
-            if (attendant.IsValid())
-                _attendantRepository.Update(attendant);
-            else
-            {
-                Notify(attendant.ValidationResult);
-                return;
-            }
+            _attendantRepository.Update(attendant);
 
             if (await CommitAsync())
             {
@@ -228,13 +223,13 @@ namespace SisOdonto.Application.Services
 
                 if (userManager is not null)
                     await _userManager.DeleteAsync(userManager);
-            } else
+            }
+            else
                 Notify("Erro ao salvar dados.");
         }
 
         private async Task AddClaims(Guid userId)
         {
-
             await AddClaimAsync(new Claim("HealthInsurance", "Search"), userId);
             await AddClaimAsync(new Claim("HealthInsurance", "Details"), userId);
             await AddClaimAsync(new Claim("HealthInsurance", "Create"), userId);

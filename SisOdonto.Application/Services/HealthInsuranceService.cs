@@ -25,7 +25,7 @@ namespace SisOdonto.Application.Services
         public HealthInsuranceService(IUnitOfWork unitOfWork,
             INotifier notifier,
             UserManager<IdentityUser> userManager,
-            IHealthInsuranceRepository dentistRepository, 
+            IHealthInsuranceRepository dentistRepository,
             IPatientRepository patientRepository)
             : base(unitOfWork, notifier, userManager)
         {
@@ -77,13 +77,7 @@ namespace SisOdonto.Application.Services
 
             healthInsurance.Delete();
 
-            if (healthInsurance.IsValid())
-                _healthInsuranceRepository.Update(healthInsurance);
-            else
-            {
-                Notify(healthInsurance.ValidationResult);
-                return;
-            }
+            _healthInsuranceRepository.Update(healthInsurance);
 
             if (await CommitAsync() is false)
                 Notify("Erro ao salvar dados.");
@@ -128,6 +122,7 @@ namespace SisOdonto.Application.Services
 
             return healthInsurancesModel;
         }
+
         public async Task Update(HealthInsuranceDataModel request)
         {
             var healthInsurance = await _healthInsuranceRepository.GetAsync(request.Id);
@@ -151,6 +146,7 @@ namespace SisOdonto.Application.Services
             if (await CommitAsync() is false)
                 Notify("Erro ao salvar dados.");
         }
+
         #endregion Constructors
     }
 }

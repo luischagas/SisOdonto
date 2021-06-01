@@ -37,7 +37,7 @@ namespace SisOdonto.Application.Services
             IPatientRepository patientRepository,
             IEmailService emailService,
             IHealthInsuranceService healthInsuranceService,
-            IHealthInsuranceRepository healthInsuranceRepository, 
+            IHealthInsuranceRepository healthInsuranceRepository,
             ISchedulingRepository schedulingRepository)
             : base(unitOfWork, notifier, userManager)
         {
@@ -142,13 +142,7 @@ namespace SisOdonto.Application.Services
 
             patient.Delete();
 
-            if (patient.IsValid())
-                _patientRepository.Update(patient);
-            else
-            {
-                Notify(patient.ValidationResult);
-                return;
-            }
+            _patientRepository.Update(patient);
 
             if (await CommitAsync())
             {
@@ -322,8 +316,6 @@ namespace SisOdonto.Application.Services
                 patientsModel.Add(patientModel);
             }
 
-
-
             return patientsModel;
         }
 
@@ -368,7 +360,6 @@ namespace SisOdonto.Application.Services
         {
             await AddClaimAsync(new Claim("Scheduling", "Search"), userId);
             await AddClaimAsync(new Claim("Scheduling", "Details"), userId);
-            
         }
 
         #endregion Constructors

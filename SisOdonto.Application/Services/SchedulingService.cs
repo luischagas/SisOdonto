@@ -4,16 +4,13 @@ using SisOdonto.Application.Models.Dentist;
 using SisOdonto.Application.Models.Patient;
 using SisOdonto.Application.Models.Scheduling;
 using SisOdonto.Domain.Entities;
+using SisOdonto.Domain.Enums.User;
 using SisOdonto.Domain.Interfaces.Notification;
 using SisOdonto.Domain.Interfaces.Repositories;
 using SisOdonto.Domain.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using SisOdonto.Domain.Enums.Dentist;
-using SisOdonto.Domain.Enums.User;
 
 namespace SisOdonto.Application.Services
 {
@@ -39,7 +36,7 @@ namespace SisOdonto.Application.Services
             IDentistService dentistService,
             IPatientService patientService,
             IDentistRepository dentistRepository,
-            IPatientRepository patientRepository, 
+            IPatientRepository patientRepository,
             IAttendantRepository attendantRepository)
             : base(unitOfWork, notifier, userManager)
         {
@@ -101,13 +98,7 @@ namespace SisOdonto.Application.Services
 
             scheduling.Delete();
 
-            if (scheduling.IsValid())
-                _schedulingRepository.Update(scheduling);
-            else
-            {
-                Notify(scheduling.ValidationResult);
-                return;
-            }
+            _schedulingRepository.Update(scheduling);
 
             if (await CommitAsync() is false)
                 Notify("Erro ao salvar dados.");

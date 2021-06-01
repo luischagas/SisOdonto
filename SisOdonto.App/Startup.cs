@@ -5,15 +5,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using SisOdonto.Infrastructure.Context;
 using SisOdonto.Infrastructure.CrossCutting.Configurations;
 using SisOdonto.Infrastructure.CrossCutting.Extensions.Configurations;
 using SisOdonto.Infrastructure.CrossCutting.Identity;
 using SisOdonto.Infrastructure.CrossCutting.IoC;
+using SisOdonto.Infrastructure.CrossCutting.Services.Models;
 
 namespace SisOdonto.App
 {
-    public class Startup
+    public partial class Startup
     {
         #region Constructors
 
@@ -38,6 +40,8 @@ namespace SisOdonto.App
 
             services.AddDbContext<SisOdontoContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            ConfigureEmail(services);
 
             services.AddMvcConfiguration();
 
@@ -75,6 +79,19 @@ namespace SisOdonto.App
 
                 endpoints.MapRazorPages();
             });
+        }
+
+        private void ConfigureEmailService(IServiceCollection services)
+        {
+            var emailSettings = new EmailSettings();
+
+            Configuration.GetSection("EmailSettings").Bind(emailSettings);
+
+            services.Configure<EmailSettings>(
+                Configuration.GetSection("EmailSettings"));
+
+            services.AddSingleton(ms =>
+                ms.GetRequiredService<IOptions<EmailSettings>>().Value);
         }
 
         #endregion Methods
