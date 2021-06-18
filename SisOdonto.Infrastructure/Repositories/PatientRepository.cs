@@ -55,6 +55,7 @@ namespace SisOdonto.Infrastructure.Repositories
         public async Task<IEnumerable<Patient>> GetAllAsync()
         {
             return await _patients
+                .Include(p => p.HealthInsurance)
                 .ToListAsync();
         }
 
