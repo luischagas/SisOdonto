@@ -32,6 +32,6 @@ update-database -context SisOdontoContext
 - Autenticação no sistema com Identity com JWT
 - Template AdminLTE com Bootstrap
 
-## Usuário Default
-Login: sisodontoinc@gmail.com
-Senha: Admin#1234
+## Usuário Padrão
+- Login: sisodontoinc@gmail.com
+- Senha: Admin#1234
