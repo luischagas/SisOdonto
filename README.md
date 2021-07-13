@@ -29,7 +29,7 @@ update-database -context SisOdontoContext
 - Arquitetura Limpa
 - Entity Framework Core 5
 - SQL Server
-- Autenticação no sistema com Identity com JWT
+- Autenticação no sistema com Identity Server com JWT
 - Template AdminLTE com Bootstrap
 
 ## Usuário Padrão
